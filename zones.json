@@ -1,0 +1,1833 @@
+[
+    {
+        "id": 3,
+        "name": "Challenge Modes",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 11182,
+                "name": "Auchindoun"
+            },
+            {
+                "id": 11175,
+                "name": "Bloodmaul Slag Mines"
+            },
+            {
+                "id": 11279,
+                "name": "The Everbloom"
+            },
+            {
+                "id": 11208,
+                "name": "Grimrail Depot"
+            },
+            {
+                "id": 11195,
+                "name": "Iron Docks"
+            },
+            {
+                "id": 11176,
+                "name": "Shadowmoon Burial Grounds"
+            },
+            {
+                "id": 11209,
+                "name": "Skyreach"
+            },
+            {
+                "id": 11358,
+                "name": "Upper Blackrock Spire"
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "6.0"
+            },
+            {
+                "id": 2,
+                "name": "6.1"
+            },
+            {
+                "id": 3,
+                "name": "6.2"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Throne of Thunder",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1577,
+                "name": "Jin'rokh the Breaker"
+            },
+            {
+                "id": 1575,
+                "name": "Horridon"
+            },
+            {
+                "id": 1570,
+                "name": "Council of Elders"
+            },
+            {
+                "id": 1565,
+                "name": "Tortos"
+            },
+            {
+                "id": 1578,
+                "name": "Megaera"
+            },
+            {
+                "id": 1573,
+                "name": "Ji-kun"
+            },
+            {
+                "id": 1572,
+                "name": "Durumu the Forgotten"
+            },
+            {
+                "id": 1574,
+                "name": "Primordius"
+            },
+            {
+                "id": 1576,
+                "name": "Dark Animus"
+            },
+            {
+                "id": 1559,
+                "name": "Iron Qon"
+            },
+            {
+                "id": 1560,
+                "name": "Twin Consorts"
+            },
+            {
+                "id": 1579,
+                "name": "Lei Shen"
+            },
+            {
+                "id": 1580,
+                "name": "Ra-den"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Siege of Orgrimmar",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1602,
+                "name": "Immerseus"
+            },
+            {
+                "id": 1598,
+                "name": "The Fallen Protectors"
+            },
+            {
+                "id": 1624,
+                "name": "Norushen"
+            },
+            {
+                "id": 1604,
+                "name": "Sha of Pride"
+            },
+            {
+                "id": 1622,
+                "name": "Galakras"
+            },
+            {
+                "id": 1600,
+                "name": "Iron Juggernaut"
+            },
+            {
+                "id": 1606,
+                "name": "Kor'kron Dark Shaman"
+            },
+            {
+                "id": 1603,
+                "name": "General Nazgrim"
+            },
+            {
+                "id": 1595,
+                "name": "Malkorok"
+            },
+            {
+                "id": 1594,
+                "name": "Spoils of Pandaria"
+            },
+            {
+                "id": 1599,
+                "name": "Thok the Bloodthirsty"
+            },
+            {
+                "id": 1601,
+                "name": "Siegecrafter Blackfuse"
+            },
+            {
+                "id": 1593,
+                "name": "Paragons of the Klaxxi"
+            },
+            {
+                "id": 1623,
+                "name": "Garrosh Hellscream"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Highmaul",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1721,
+                "name": "Kargath Bladefist"
+            },
+            {
+                "id": 1706,
+                "name": "The Butcher"
+            },
+            {
+                "id": 1722,
+                "name": "Tectus, The Living Mountain"
+            },
+            {
+                "id": 1720,
+                "name": "Brackenspore"
+            },
+            {
+                "id": 1719,
+                "name": "Twin Ogron"
+            },
+            {
+                "id": 1723,
+                "name": "Ko'ragh"
+            },
+            {
+                "id": 1705,
+                "name": "Imperator Mar'gok"
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "630-647"
+            },
+            {
+                "id": 2,
+                "name": "648-662"
+            },
+            {
+                "id": 3,
+                "name": "663-677"
+            },
+            {
+                "id": 4,
+                "name": "678-692"
+            },
+            {
+                "id": 5,
+                "name": "693+"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Blackrock Foundry",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1691,
+                "name": "Gruul"
+            },
+            {
+                "id": 1696,
+                "name": "Oregorger"
+            },
+            {
+                "id": 1690,
+                "name": "Blast Furnace"
+            },
+            {
+                "id": 1693,
+                "name": "Hans'gar and Franzok"
+            },
+            {
+                "id": 1689,
+                "name": "Flamebender Ka'graz"
+            },
+            {
+                "id": 1713,
+                "name": "Kromog"
+            },
+            {
+                "id": 1694,
+                "name": "Beastlord Darmac"
+            },
+            {
+                "id": 1692,
+                "name": "Operator Thogar"
+            },
+            {
+                "id": 1695,
+                "name": "The Iron Maidens"
+            },
+            {
+                "id": 1704,
+                "name": "Blackhand"
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "630-657"
+            },
+            {
+                "id": 2,
+                "name": "658-664"
+            },
+            {
+                "id": 3,
+                "name": "665-672"
+            },
+            {
+                "id": 4,
+                "name": "673-679"
+            },
+            {
+                "id": 5,
+                "name": "680-687"
+            },
+            {
+                "id": 6,
+                "name": "688-694"
+            },
+            {
+                "id": 7,
+                "name": "695+"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Hellfire Citadel",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1778,
+                "name": "Hellfire Assault"
+            },
+            {
+                "id": 1785,
+                "name": "Iron Reaver"
+            },
+            {
+                "id": 1787,
+                "name": "Kormrok"
+            },
+            {
+                "id": 1798,
+                "name": "Hellfire High Council"
+            },
+            {
+                "id": 1786,
+                "name": "Kilrogg Deadeye"
+            },
+            {
+                "id": 1783,
+                "name": "Gorefiend"
+            },
+            {
+                "id": 1788,
+                "name": "Shadow-Lord Iskar"
+            },
+            {
+                "id": 1777,
+                "name": "Fel Lord Zakuun"
+            },
+            {
+                "id": 1800,
+                "name": "Xhul'horac"
+            },
+            {
+                "id": 1794,
+                "name": "Socrethar the Eternal"
+            },
+            {
+                "id": 1784,
+                "name": "Tyrant Velhari"
+            },
+            {
+                "id": 1795,
+                "name": "Mannoroth"
+            },
+            {
+                "id": 1799,
+                "name": "Archimonde"
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "630-684"
+            },
+            {
+                "id": 2,
+                "name": "685-687"
+            },
+            {
+                "id": 3,
+                "name": "688-690"
+            },
+            {
+                "id": 4,
+                "name": "691-693"
+            },
+            {
+                "id": 5,
+                "name": "694-696"
+            },
+            {
+                "id": 6,
+                "name": "697-699"
+            },
+            {
+                "id": 7,
+                "name": "700-702"
+            },
+            {
+                "id": 8,
+                "name": "703-705"
+            },
+            {
+                "id": 9,
+                "name": "706-708"
+            },
+            {
+                "id": 10,
+                "name": "709-711"
+            },
+            {
+                "id": 11,
+                "name": "712-714"
+            },
+            {
+                "id": 12,
+                "name": "715-717"
+            },
+            {
+                "id": 13,
+                "name": "718-720"
+            },
+            {
+                "id": 14,
+                "name": "721-723"
+            },
+            {
+                "id": 15,
+                "name": "724-726"
+            },
+            {
+                "id": 16,
+                "name": "727-729"
+            },
+            {
+                "id": 17,
+                "name": "730-732"
+            },
+            {
+                "id": 18,
+                "name": "733-735"
+            },
+            {
+                "id": 19,
+                "name": "736-738"
+            },
+            {
+                "id": 20,
+                "name": "739-741"
+            },
+            {
+                "id": 21,
+                "name": "742-744"
+            },
+            {
+                "id": 22,
+                "name": "745+"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Mythic+ Dungeons",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 11516,
+                "name": "The Arcway"
+            },
+            {
+                "id": 11501,
+                "name": "Black Rook Hold"
+            },
+            {
+                "id": 11571,
+                "name": "Court of Stars"
+            },
+            {
+                "id": 11466,
+                "name": "Darkheart Thicket"
+            },
+            {
+                "id": 11456,
+                "name": "Eye of Azshara"
+            },
+            {
+                "id": 11477,
+                "name": "Halls of Valor"
+            },
+            {
+                "id": 11492,
+                "name": "Maw of Souls"
+            },
+            {
+                "id": 11458,
+                "name": "Neltharion's Lair"
+            },
+            {
+                "id": 11493,
+                "name": "Vault of the Wardens"
+            },
+            {
+                "id": 11651,
+                "name": "Lower Karazhan"
+            },
+            {
+                "id": 11652,
+                "name": "Upper Karazhan"
+            },
+            {
+                "id": 11677,
+                "name": "Cathedral of Eternal Night"
+            },
+            {
+                "id": 11753,
+                "name": "Seat of the Triumvirate"
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": 1
+            },
+            {
+                "id": 2,
+                "name": 2
+            },
+            {
+                "id": 3,
+                "name": 3
+            },
+            {
+                "id": 4,
+                "name": 4
+            },
+            {
+                "id": 5,
+                "name": 5
+            },
+            {
+                "id": 6,
+                "name": 6
+            },
+            {
+                "id": 7,
+                "name": 7
+            },
+            {
+                "id": 8,
+                "name": 8
+            },
+            {
+                "id": 9,
+                "name": 9
+            },
+            {
+                "id": 10,
+                "name": 10
+            },
+            {
+                "id": 11,
+                "name": 11
+            },
+            {
+                "id": 12,
+                "name": 12
+            },
+            {
+                "id": 13,
+                "name": 13
+            },
+            {
+                "id": 14,
+                "name": 14
+            },
+            {
+                "id": 15,
+                "name": 15
+            },
+            {
+                "id": 16,
+                "name": 16
+            },
+            {
+                "id": 17,
+                "name": 17
+            },
+            {
+                "id": 18,
+                "name": 18
+            },
+            {
+                "id": 19,
+                "name": 19
+            },
+            {
+                "id": 20,
+                "name": 20
+            },
+            {
+                "id": 21,
+                "name": 21
+            },
+            {
+                "id": 22,
+                "name": 22
+            },
+            {
+                "id": 23,
+                "name": 23
+            },
+            {
+                "id": 24,
+                "name": 24
+            },
+            {
+                "id": 25,
+                "name": 25
+            },
+            {
+                "id": 26,
+                "name": 26
+            },
+            {
+                "id": 27,
+                "name": 27
+            },
+            {
+                "id": 28,
+                "name": 28
+            },
+            {
+                "id": 29,
+                "name": 29
+            },
+            {
+                "id": 30,
+                "name": 30
+            },
+            {
+                "id": 31,
+                "name": 31
+            },
+            {
+                "id": 32,
+                "name": 32
+            },
+            {
+                "id": 33,
+                "name": 33
+            },
+            {
+                "id": 34,
+                "name": 34
+            },
+            {
+                "id": 35,
+                "name": 35
+            },
+            {
+                "id": 36,
+                "name": 36
+            },
+            {
+                "id": 37,
+                "name": 37
+            },
+            {
+                "id": 38,
+                "name": 38
+            },
+            {
+                "id": 39,
+                "name": 39
+            },
+            {
+                "id": 40,
+                "name": 40
+            },
+            {
+                "id": 41,
+                "name": 41
+            },
+            {
+                "id": 42,
+                "name": 42
+            },
+            {
+                "id": 43,
+                "name": 43
+            },
+            {
+                "id": 44,
+                "name": 44
+            },
+            {
+                "id": 45,
+                "name": 45
+            },
+            {
+                "id": 46,
+                "name": 46
+            },
+            {
+                "id": 47,
+                "name": 47
+            },
+            {
+                "id": 48,
+                "name": "48+"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "name": "Emerald Nightmare",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1853,
+                "name": "Nythendra",
+                "npcID": 103160
+            },
+            {
+                "id": 1873,
+                "name": "Il'gynoth, Heart of Corruption",
+                "npcID": 105393
+            },
+            {
+                "id": 1876,
+                "name": "Elerethe Renferal",
+                "npcID": 111000
+            },
+            {
+                "id": 1841,
+                "name": "Ursoc",
+                "npcID": 100497
+            },
+            {
+                "id": 1854,
+                "name": "Dragons of Nightmare",
+                "npcID": 102679
+            },
+            {
+                "id": 1877,
+                "name": "Cenarius",
+                "npcID": 113534
+            },
+            {
+                "id": 1864,
+                "name": "Xavius",
+                "npcID": 103769
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "827-829"
+            },
+            {
+                "id": 2,
+                "name": "830-832"
+            },
+            {
+                "id": 3,
+                "name": "833-835"
+            },
+            {
+                "id": 4,
+                "name": "836-838"
+            },
+            {
+                "id": 5,
+                "name": "839-841"
+            },
+            {
+                "id": 6,
+                "name": "842-844"
+            },
+            {
+                "id": 7,
+                "name": "845-847"
+            },
+            {
+                "id": 8,
+                "name": "848-850"
+            },
+            {
+                "id": 9,
+                "name": "851-853"
+            },
+            {
+                "id": 10,
+                "name": "854-856"
+            },
+            {
+                "id": 11,
+                "name": "857-859"
+            },
+            {
+                "id": 12,
+                "name": "860-862"
+            },
+            {
+                "id": 13,
+                "name": "863-865"
+            },
+            {
+                "id": 14,
+                "name": "866-868"
+            },
+            {
+                "id": 15,
+                "name": "869-871"
+            },
+            {
+                "id": 16,
+                "name": "872-874"
+            },
+            {
+                "id": 17,
+                "name": "875-877"
+            },
+            {
+                "id": 18,
+                "name": "878-880"
+            },
+            {
+                "id": 19,
+                "name": "881-883"
+            },
+            {
+                "id": 20,
+                "name": "884-886"
+            },
+            {
+                "id": 21,
+                "name": "887-889"
+            },
+            {
+                "id": 22,
+                "name": "890-892"
+            },
+            {
+                "id": 23,
+                "name": "893-895"
+            },
+            {
+                "id": 24,
+                "name": "896-898"
+            },
+            {
+                "id": 25,
+                "name": "899-901"
+            },
+            {
+                "id": 26,
+                "name": "902-904"
+            },
+            {
+                "id": 27,
+                "name": "905-907"
+            },
+            {
+                "id": 28,
+                "name": "908-910"
+            },
+            {
+                "id": 29,
+                "name": "911-913"
+            },
+            {
+                "id": 30,
+                "name": "914-916"
+            },
+            {
+                "id": 31,
+                "name": "917-919"
+            },
+            {
+                "id": 32,
+                "name": "920+"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "name": "The Nighthold",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1849,
+                "name": "Skorpyron",
+                "npcID": 102263
+            },
+            {
+                "id": 1865,
+                "name": "Chronomatic Anomaly",
+                "npcID": 104415
+            },
+            {
+                "id": 1867,
+                "name": "Trilliax",
+                "npcID": 104288
+            },
+            {
+                "id": 1871,
+                "name": "Spellblade Aluriel",
+                "npcID": 107699
+            },
+            {
+                "id": 1862,
+                "name": "Tichondrius",
+                "npcID": 103685
+            },
+            {
+                "id": 1863,
+                "name": "Star Augur Etraeus",
+                "npcID": 103758
+            },
+            {
+                "id": 1842,
+                "name": "Krosus",
+                "npcID": 101002
+            },
+            {
+                "id": 1886,
+                "name": "High Botanist Tel'arn",
+                "npcID": 104528
+            },
+            {
+                "id": 1872,
+                "name": "Grand Magistrix Elisande",
+                "npcID": 110965
+            },
+            {
+                "id": 1866,
+                "name": "Gul'dan",
+                "npcID": 105503
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "842-844"
+            },
+            {
+                "id": 2,
+                "name": "845-847"
+            },
+            {
+                "id": 3,
+                "name": "848-850"
+            },
+            {
+                "id": 4,
+                "name": "851-853"
+            },
+            {
+                "id": 5,
+                "name": "854-856"
+            },
+            {
+                "id": 6,
+                "name": "857-859"
+            },
+            {
+                "id": 7,
+                "name": "860-862"
+            },
+            {
+                "id": 8,
+                "name": "863-865"
+            },
+            {
+                "id": 9,
+                "name": "866-868"
+            },
+            {
+                "id": 10,
+                "name": "869-871"
+            },
+            {
+                "id": 11,
+                "name": "872-874"
+            },
+            {
+                "id": 12,
+                "name": "875-877"
+            },
+            {
+                "id": 13,
+                "name": "878-880"
+            },
+            {
+                "id": 14,
+                "name": "881-883"
+            },
+            {
+                "id": 15,
+                "name": "884-886"
+            },
+            {
+                "id": 16,
+                "name": "887-889"
+            },
+            {
+                "id": 17,
+                "name": "890-892"
+            },
+            {
+                "id": 18,
+                "name": "893-895"
+            },
+            {
+                "id": 19,
+                "name": "896-898"
+            },
+            {
+                "id": 20,
+                "name": "899-901"
+            },
+            {
+                "id": 21,
+                "name": "902-904"
+            },
+            {
+                "id": 22,
+                "name": "905-907"
+            },
+            {
+                "id": 23,
+                "name": "908-910"
+            },
+            {
+                "id": 24,
+                "name": "911-913"
+            },
+            {
+                "id": 25,
+                "name": "914-916"
+            },
+            {
+                "id": 26,
+                "name": "917-919"
+            },
+            {
+                "id": 27,
+                "name": "920-922"
+            },
+            {
+                "id": 28,
+                "name": "923-925"
+            },
+            {
+                "id": 29,
+                "name": "926-928"
+            },
+            {
+                "id": 30,
+                "name": "929-931"
+            },
+            {
+                "id": 31,
+                "name": "932-934"
+            },
+            {
+                "id": 32,
+                "name": "935+"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "name": "Trial of Valor",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 1958,
+                "name": "Odyn",
+                "npcID": 115323
+            },
+            {
+                "id": 1962,
+                "name": "Guarm",
+                "npcID": 114344
+            },
+            {
+                "id": 2008,
+                "name": "Helya",
+                "npcID": 93394
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "827-829"
+            },
+            {
+                "id": 2,
+                "name": "830-832"
+            },
+            {
+                "id": 3,
+                "name": "833-835"
+            },
+            {
+                "id": 4,
+                "name": "836-838"
+            },
+            {
+                "id": 5,
+                "name": "839-841"
+            },
+            {
+                "id": 6,
+                "name": "842-844"
+            },
+            {
+                "id": 7,
+                "name": "845-847"
+            },
+            {
+                "id": 8,
+                "name": "848-850"
+            },
+            {
+                "id": 9,
+                "name": "851-853"
+            },
+            {
+                "id": 10,
+                "name": "854-856"
+            },
+            {
+                "id": 11,
+                "name": "857-859"
+            },
+            {
+                "id": 12,
+                "name": "860-862"
+            },
+            {
+                "id": 13,
+                "name": "863-865"
+            },
+            {
+                "id": 14,
+                "name": "866-868"
+            },
+            {
+                "id": 15,
+                "name": "869-871"
+            },
+            {
+                "id": 16,
+                "name": "872-874"
+            },
+            {
+                "id": 17,
+                "name": "875-877"
+            },
+            {
+                "id": 18,
+                "name": "878-880"
+            },
+            {
+                "id": 19,
+                "name": "881-883"
+            },
+            {
+                "id": 20,
+                "name": "884-886"
+            },
+            {
+                "id": 21,
+                "name": "887-889"
+            },
+            {
+                "id": 22,
+                "name": "890-892"
+            },
+            {
+                "id": 23,
+                "name": "893-895"
+            },
+            {
+                "id": 24,
+                "name": "896-898"
+            },
+            {
+                "id": 25,
+                "name": "899-901"
+            },
+            {
+                "id": 26,
+                "name": "902-904"
+            },
+            {
+                "id": 27,
+                "name": "905-907"
+            },
+            {
+                "id": 28,
+                "name": "908-910"
+            },
+            {
+                "id": 29,
+                "name": "911-913"
+            },
+            {
+                "id": 30,
+                "name": "914-916"
+            },
+            {
+                "id": 31,
+                "name": "917-919"
+            },
+            {
+                "id": 32,
+                "name": "920+"
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "name": "Tomb of Sargeras",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 2032,
+                "name": "Goroth",
+                "npcID": 115844
+            },
+            {
+                "id": 2048,
+                "name": "Demonic Inquisition",
+                "npcID": 116689
+            },
+            {
+                "id": 2036,
+                "name": "Harjatan",
+                "npcID": 116407
+            },
+            {
+                "id": 2037,
+                "name": "Mistress Sassz'ine",
+                "npcID": 115767
+            },
+            {
+                "id": 2050,
+                "name": "Sisters of the Moon",
+                "npcID": 118523
+            },
+            {
+                "id": 2054,
+                "name": "The Desolate Host",
+                "npcID": 118460
+            },
+            {
+                "id": 2052,
+                "name": "Maiden of Vigilance",
+                "npcID": 118289
+            },
+            {
+                "id": 2038,
+                "name": "Fallen Avatar",
+                "npcID": 116939
+            },
+            {
+                "id": 2051,
+                "name": "Kil'jaeden",
+                "npcID": 117269
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "862-864"
+            },
+            {
+                "id": 2,
+                "name": "865-867"
+            },
+            {
+                "id": 3,
+                "name": "868-870"
+            },
+            {
+                "id": 4,
+                "name": "871-873"
+            },
+            {
+                "id": 5,
+                "name": "874-876"
+            },
+            {
+                "id": 6,
+                "name": "877-879"
+            },
+            {
+                "id": 7,
+                "name": "880-882"
+            },
+            {
+                "id": 8,
+                "name": "883-885"
+            },
+            {
+                "id": 9,
+                "name": "886-888"
+            },
+            {
+                "id": 10,
+                "name": "889-891"
+            },
+            {
+                "id": 11,
+                "name": "892-894"
+            },
+            {
+                "id": 12,
+                "name": "895-897"
+            },
+            {
+                "id": 13,
+                "name": "898-900"
+            },
+            {
+                "id": 14,
+                "name": "901-903"
+            },
+            {
+                "id": 15,
+                "name": "904-906"
+            },
+            {
+                "id": 16,
+                "name": "907-909"
+            },
+            {
+                "id": 17,
+                "name": "910-912"
+            },
+            {
+                "id": 18,
+                "name": "913-915"
+            },
+            {
+                "id": 19,
+                "name": "916-918"
+            },
+            {
+                "id": 20,
+                "name": "919-921"
+            },
+            {
+                "id": 21,
+                "name": "922-924"
+            },
+            {
+                "id": 22,
+                "name": "925-927"
+            },
+            {
+                "id": 23,
+                "name": "928-930"
+            },
+            {
+                "id": 24,
+                "name": "931-933"
+            },
+            {
+                "id": 25,
+                "name": "934-936"
+            },
+            {
+                "id": 26,
+                "name": "937-939"
+            },
+            {
+                "id": 27,
+                "name": "940-942"
+            },
+            {
+                "id": 28,
+                "name": "943-945"
+            },
+            {
+                "id": 29,
+                "name": "946-948"
+            },
+            {
+                "id": 30,
+                "name": "949-951"
+            },
+            {
+                "id": 31,
+                "name": "952-954"
+            },
+            {
+                "id": 32,
+                "name": "955+"
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "name": "Mythic+ 7.2",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 111516,
+                "name": "The Arcway",
+                "npcID": 117269
+            },
+            {
+                "id": 111501,
+                "name": "Black Rook Hold",
+                "npcID": 117269
+            },
+            {
+                "id": 111571,
+                "name": "Court of Stars",
+                "npcID": 117269
+            },
+            {
+                "id": 111466,
+                "name": "Darkheart Thicket",
+                "npcID": 117269
+            },
+            {
+                "id": 111456,
+                "name": "Eye of Azshara",
+                "npcID": 117269
+            },
+            {
+                "id": 111477,
+                "name": "Halls of Valor",
+                "npcID": 117269
+            },
+            {
+                "id": 111492,
+                "name": "Maw of Souls",
+                "npcID": 117269
+            },
+            {
+                "id": 111458,
+                "name": "Neltharion's Lair",
+                "npcID": 117269
+            },
+            {
+                "id": 111493,
+                "name": "Vault of the Wardens",
+                "npcID": 117269
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "name": "Mage Tower Challenges",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 20000,
+                "name": "The Highlord's Return",
+                "npcID": 117269
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "name": "Mythic+ 7.2.5",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 211516,
+                "name": "The Arcway",
+                "npcID": 117269
+            },
+            {
+                "id": 211501,
+                "name": "Black Rook Hold",
+                "npcID": 117269
+            },
+            {
+                "id": 211571,
+                "name": "Court of Stars",
+                "npcID": 117269
+            },
+            {
+                "id": 211466,
+                "name": "Darkheart Thicket",
+                "npcID": 117269
+            },
+            {
+                "id": 211456,
+                "name": "Eye of Azshara",
+                "npcID": 117269
+            },
+            {
+                "id": 211477,
+                "name": "Halls of Valor",
+                "npcID": 117269
+            },
+            {
+                "id": 211492,
+                "name": "Maw of Souls",
+                "npcID": 117269
+            },
+            {
+                "id": 211458,
+                "name": "Neltharion's Lair",
+                "npcID": 117269
+            },
+            {
+                "id": 211493,
+                "name": "Vault of the Wardens",
+                "npcID": 117269
+            },
+            {
+                "id": 211651,
+                "name": "Lower Karazhan",
+                "npcID": 117269
+            },
+            {
+                "id": 211652,
+                "name": "Upper Karazhan",
+                "npcID": 117269
+            },
+            {
+                "id": 211677,
+                "name": "Cathedral of Eternal Night",
+                "npcID": 117269
+            },
+            {
+                "id": 211753,
+                "name": "Seat of the Triumvirate",
+                "npcID": 117269
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "name": "Antorus, The Burning Throne",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 2076,
+                "name": "Garothi Worldbreaker",
+                "npcID": 122450
+            },
+            {
+                "id": 2074,
+                "name": "Felhounds of Sargeras",
+                "npcID": 122477
+            },
+            {
+                "id": 2070,
+                "name": "Antoran High Command",
+                "npcID": 122367
+            },
+            {
+                "id": 2075,
+                "name": "Eonar the Life-Binder",
+                "npcID": 122500
+            },
+            {
+                "id": 2064,
+                "name": "Portal Keeper Hasabel",
+                "npcID": 122104
+            },
+            {
+                "id": 2082,
+                "name": "Imonar the Soulhunter",
+                "npcID": 124158
+            },
+            {
+                "id": 2088,
+                "name": "Kin'garoth",
+                "npcID": 122578
+            },
+            {
+                "id": 2069,
+                "name": "Varimathras",
+                "npcID": 122366
+            },
+            {
+                "id": 2073,
+                "name": "The Coven of Shivarra",
+                "npcID": 122468
+            },
+            {
+                "id": 2063,
+                "name": "Aggramar",
+                "npcID": 121975
+            },
+            {
+                "id": 2092,
+                "name": "Argus the Unmaker",
+                "npcID": 124828
+            }
+        ],
+        "brackets": [
+            {
+                "id": 1,
+                "name": "908-910"
+            },
+            {
+                "id": 2,
+                "name": "911-913"
+            },
+            {
+                "id": 3,
+                "name": "914-916"
+            },
+            {
+                "id": 4,
+                "name": "917-919"
+            },
+            {
+                "id": 5,
+                "name": "920-922"
+            },
+            {
+                "id": 6,
+                "name": "923-925"
+            },
+            {
+                "id": 7,
+                "name": "926-928"
+            },
+            {
+                "id": 8,
+                "name": "929-931"
+            },
+            {
+                "id": 9,
+                "name": "932-934"
+            },
+            {
+                "id": 10,
+                "name": "935-937"
+            },
+            {
+                "id": 11,
+                "name": "938-940"
+            },
+            {
+                "id": 12,
+                "name": "941-943"
+            },
+            {
+                "id": 13,
+                "name": "944-946"
+            },
+            {
+                "id": 14,
+                "name": "947-949"
+            },
+            {
+                "id": 15,
+                "name": "950-952"
+            },
+            {
+                "id": 16,
+                "name": "953-955"
+            },
+            {
+                "id": 17,
+                "name": "956-958"
+            },
+            {
+                "id": 18,
+                "name": "959-961"
+            },
+            {
+                "id": 19,
+                "name": "962-964"
+            },
+            {
+                "id": 20,
+                "name": "965-967"
+            },
+            {
+                "id": 21,
+                "name": "968-970"
+            },
+            {
+                "id": 22,
+                "name": "971-973"
+            },
+            {
+                "id": 23,
+                "name": "974-976"
+            },
+            {
+                "id": 24,
+                "name": "977-979"
+            },
+            {
+                "id": 25,
+                "name": "980-982"
+            },
+            {
+                "id": 26,
+                "name": "983-985"
+            },
+            {
+                "id": 27,
+                "name": "986+"
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "name": "Mythic+ 7.3",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 311516,
+                "name": "The Arcway",
+                "npcID": 124828
+            },
+            {
+                "id": 311501,
+                "name": "Black Rook Hold",
+                "npcID": 124828
+            },
+            {
+                "id": 311571,
+                "name": "Court of Stars",
+                "npcID": 124828
+            },
+            {
+                "id": 311466,
+                "name": "Darkheart Thicket",
+                "npcID": 124828
+            },
+            {
+                "id": 311456,
+                "name": "Eye of Azshara",
+                "npcID": 124828
+            },
+            {
+                "id": 311477,
+                "name": "Halls of Valor",
+                "npcID": 124828
+            },
+            {
+                "id": 311492,
+                "name": "Maw of Souls",
+                "npcID": 124828
+            },
+            {
+                "id": 311458,
+                "name": "Neltharion's Lair",
+                "npcID": 124828
+            },
+            {
+                "id": 311493,
+                "name": "Vault of the Wardens",
+                "npcID": 124828
+            },
+            {
+                "id": 311651,
+                "name": "Lower Karazhan",
+                "npcID": 124828
+            },
+            {
+                "id": 311652,
+                "name": "Upper Karazhan",
+                "npcID": 124828
+            },
+            {
+                "id": 311677,
+                "name": "Cathedral of Eternal Night",
+                "npcID": 124828
+            },
+            {
+                "id": 311753,
+                "name": "Seat of the Triumvirate",
+                "npcID": 124828
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "name": "Uldir",
+        "frozen": true,
+        "encounters": [
+            {
+                "id": 2144,
+                "name": "Taloc",
+                "npcID": 124828
+            },
+            {
+                "id": 2141,
+                "name": "MOTHER",
+                "npcID": 124828
+            },
+            {
+                "id": 2128,
+                "name": "Fetid Devourer",
+                "npcID": 124828
+            },
+            {
+                "id": 2136,
+                "name": "Zek'voz, Herald of N'zoth",
+                "npcID": 124828
+            },
+            {
+                "id": 2134,
+                "name": "Vectis",
+                "npcID": 124828
+            },
+            {
+                "id": 2145,
+                "name": "Zul, Reborn",
+                "npcID": 124828
+            },
+            {
+                "id": 2135,
+                "name": "Mythrax the Unraveler",
+                "npcID": 124828
+            },
+            {
+                "id": 2147,
+                "name": "G'huun",
+                "npcID": 124828
+            }
+        ]
+    }
+]

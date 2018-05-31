@@ -1,0 +1,2382 @@
+{
+    "fights": [
+        {
+            "id": 1,
+            "start_time": 0,
+            "end_time": 256767,
+            "boss": 2063,
+            "size": 17,
+            "difficulty": 3,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 5,
+            "name": "Aggramar"
+        },
+        {
+            "id": 2,
+            "start_time": 393982,
+            "end_time": 813862,
+            "boss": 2092,
+            "size": 18,
+            "difficulty": 3,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 4,
+            "name": "Argus the Unmaker"
+        },
+        {
+            "id": 3,
+            "start_time": 1819244,
+            "end_time": 2088389,
+            "boss": 2076,
+            "size": 11,
+            "difficulty": 4,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 1,
+            "name": "Garothi Worldbreaker"
+        },
+        {
+            "id": 4,
+            "start_time": 2884372,
+            "end_time": 3218338,
+            "boss": 2064,
+            "size": 12,
+            "difficulty": 4,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 4,
+            "name": "Portal Keeper Hasabel"
+        },
+        {
+            "id": 5,
+            "start_time": 3486560,
+            "end_time": 3912664,
+            "boss": 2075,
+            "size": 12,
+            "difficulty": 4,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 0,
+            "name": "The Defense of Eonar"
+        },
+        {
+            "id": 6,
+            "start_time": 4178999,
+            "end_time": 4407217,
+            "boss": 2074,
+            "size": 12,
+            "difficulty": 4,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 0,
+            "name": "Felhounds of Sargeras"
+        },
+        {
+            "id": 7,
+            "start_time": 4808841,
+            "end_time": 5163874,
+            "boss": 2070,
+            "size": 10,
+            "difficulty": 4,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 1,
+            "name": "Antoran High Command"
+        },
+        {
+            "id": 8,
+            "start_time": 5369102,
+            "end_time": 5772812,
+            "boss": 2082,
+            "size": 10,
+            "difficulty": 4,
+            "kill": true,
+            "partial": 3,
+            "bossPercentage": 0,
+            "fightPercentage": 0,
+            "lastPhaseForPercentageDisplay": 1,
+            "name": "Imonar the Soulhunter"
+        }
+    ],
+    "lang": "en",
+    "friendlies": [
+        {
+            "name": "Hulka",
+            "id": 1,
+            "guid": 112024492,
+            "type": "Shaman",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Islaya",
+            "id": 4,
+            "guid": 133990197,
+            "type": "Shaman",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                }
+            ]
+        },
+        {
+            "name": "Breakinbad",
+            "id": 10,
+            "guid": 109837936,
+            "type": "DeathKnight",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Amytroehler",
+            "id": 91,
+            "guid": 180942428,
+            "type": "DeathKnight",
+            "fights": [
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Dymex",
+            "id": 14,
+            "guid": 73564236,
+            "type": "Rogue",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                }
+            ]
+        },
+        {
+            "name": "Bodaciousben",
+            "id": 8,
+            "guid": 177990071,
+            "type": "Monk",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Aman'Thul",
+            "id": 70,
+            "guid": 125885,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 1,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Admiral's Pod",
+            "id": 123,
+            "guid": 122554,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1,
+                    "groups": 7
+                }
+            ]
+        },
+        {
+            "name": "Gift of the Lifebinder",
+            "id": 74,
+            "guid": 129386,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Lightforged Warframe",
+            "id": 84,
+            "guid": 125476,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 2,
+                    "groups": 7
+                }
+            ]
+        },
+        {
+            "name": "Oreocatili",
+            "id": 5,
+            "guid": 149096430,
+            "type": "Warlock",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Seviana",
+            "id": 6,
+            "guid": 187161256,
+            "type": "Hunter",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Bradney",
+            "id": 64,
+            "guid": 178621632,
+            "type": "Druid",
+            "fights": [
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Potatosack",
+            "id": 9,
+            "guid": 82866134,
+            "type": "Druid",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Jayneember",
+            "id": 17,
+            "guid": 136106564,
+            "type": "Hunter",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Fixlepiggz",
+            "id": 16,
+            "guid": 116634655,
+            "type": "Mage",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Grezgara",
+            "id": 11,
+            "guid": 82783097,
+            "type": "Monk",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Garen",
+            "id": 76,
+            "guid": 138570096,
+            "type": "Paladin",
+            "fights": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "General's Pod",
+            "id": 136,
+            "guid": 123013,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Engineer's Pod",
+            "id": 132,
+            "guid": 123020,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Essence of Eonar",
+            "id": 110,
+            "guid": 122500,
+            "type": "Boss",
+            "lockBossFrame": true,
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 1,
+                    "groups": 9
+                }
+            ]
+        },
+        {
+            "name": "Ucube",
+            "id": 13,
+            "guid": 183298140,
+            "type": "Shaman",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Norgannon",
+            "id": 71,
+            "guid": 126266,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 1,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Dances",
+            "id": 19,
+            "guid": 149293597,
+            "type": "Hunter",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                },
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Golganneth",
+            "id": 66,
+            "guid": 126268,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 1,
+                    "groups": 3
+                }
+            ]
+        },
+        {
+            "name": "Threes\u00eexty",
+            "id": 15,
+            "guid": 176061817,
+            "type": "Paladin",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Ampu",
+            "id": 7,
+            "guid": 69119602,
+            "type": "Paladin",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Kellycostner",
+            "id": 18,
+            "guid": 178895802,
+            "type": "DemonHunter",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Hati",
+            "id": 20,
+            "guid": 106551,
+            "type": "Pet",
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 3
+                },
+                {
+                    "id": 3,
+                    "instances": 2
+                },
+                {
+                    "id": 4,
+                    "instances": 2
+                },
+                {
+                    "id": 5,
+                    "instances": 2
+                },
+                {
+                    "id": 6,
+                    "instances": 2
+                },
+                {
+                    "id": 7,
+                    "instances": 2
+                },
+                {
+                    "id": 8,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Astrocreep",
+            "id": 77,
+            "guid": 92307449,
+            "type": "Priest",
+            "fights": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "\u00c7ain",
+            "id": 12,
+            "guid": 182605229,
+            "type": "DeathKnight",
+            "fights": [
+                {
+                    "id": 1
+                },
+                {
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Eonar",
+            "id": 73,
+            "guid": 126267,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 1
+                }
+            ]
+        }
+    ],
+    "enemies": [
+        {
+            "name": "Decimator",
+            "id": 81,
+            "guid": 122773,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 1,
+                    "groups": 8
+                }
+            ]
+        },
+        {
+            "name": "Volant Kerapteron",
+            "id": 115,
+            "guid": 124227,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 14,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Flame of Taeshalach",
+            "id": 52,
+            "guid": 121985,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 4,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "General Erodus",
+            "id": 124,
+            "guid": 130186,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Portal Keeper Hasabel",
+            "id": 90,
+            "guid": 122104,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Feltouched Skitterer",
+            "id": 103,
+            "guid": 123702,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 6,
+                    "groups": 4
+                }
+            ]
+        },
+        {
+            "name": "Aggramar",
+            "id": 3,
+            "guid": 121975,
+            "type": "Boss",
+            "lockBossFrame": true,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Vulcanar",
+            "id": 99,
+            "guid": 122211,
+            "type": "NPC",
+            "showBossFrame": true,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Lady Dacidion",
+            "id": 101,
+            "guid": 122212,
+            "type": "NPC",
+            "showBossFrame": true,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Artillery Strike",
+            "id": 150,
+            "guid": 124889,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 2,
+                    "groups": 1
+                }
+            ]
+        },
+        {
+            "name": "Soulblight Orb",
+            "id": 68,
+            "guid": 125008,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Wake of Flame",
+            "id": 62,
+            "guid": 122581,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 2,
+                    "groups": 1
+                }
+            ]
+        },
+        {
+            "name": "Shatug",
+            "id": 119,
+            "guid": 122135,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 6,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Admiral Svirax",
+            "id": 122,
+            "guid": 122367,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1,
+                    "groups": 3
+                }
+            ]
+        },
+        {
+            "name": "Legion Cruiser",
+            "id": 135,
+            "guid": 122739,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 6
+                }
+            ]
+        },
+        {
+            "name": "Garothi Worldbreaker",
+            "id": 89,
+            "guid": 124167,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 4,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Fanatical Pyromancer",
+            "id": 128,
+            "guid": 122890,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 6,
+                    "groups": 8
+                }
+            ]
+        },
+        {
+            "name": "Ember of Taeshalach",
+            "id": 53,
+            "guid": 122532,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 12,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "General Erodus",
+            "id": 126,
+            "guid": 122333,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1,
+                    "groups": 9
+                }
+            ]
+        },
+        {
+            "name": "Admiral Svirax",
+            "id": 134,
+            "guid": 130184,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Fel Hound",
+            "id": 109,
+            "guid": 123191,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 18,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Garothi Worldbreaker",
+            "id": 78,
+            "guid": 122450,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Fel Lord",
+            "id": 112,
+            "guid": 123452,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 7,
+                    "groups": 4
+                }
+            ]
+        },
+        {
+            "name": "Fel-Infused Destructor",
+            "id": 108,
+            "guid": 123760,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 6,
+                    "groups": 5
+                }
+            ]
+        },
+        {
+            "name": "Fel-Powered Purifier",
+            "id": 114,
+            "guid": 123726,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 3,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Argus the Unmaker",
+            "id": 65,
+            "guid": 124828,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 1,
+                    "groups": 5
+                }
+            ]
+        },
+        {
+            "name": "Annihilator",
+            "id": 86,
+            "guid": 122778,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 1,
+                    "groups": 3
+                }
+            ]
+        },
+        {
+            "name": "Edge of Obliteration",
+            "id": 69,
+            "guid": 126828,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Disruptor Beacon",
+            "id": 137,
+            "guid": 122884,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 9,
+                    "groups": 1
+                }
+            ]
+        },
+        {
+            "name": "Constellar Designate",
+            "id": 72,
+            "guid": 127192,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 7,
+                    "groups": 1
+                }
+            ]
+        },
+        {
+            "name": "Imonar the Soulhunter",
+            "id": 138,
+            "guid": 124158,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Blazing Imp",
+            "id": 98,
+            "guid": 122783,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 61,
+                    "groups": 7
+                }
+            ]
+        },
+        {
+            "name": "Lord Eilgar",
+            "id": 104,
+            "guid": 122213,
+            "type": "NPC",
+            "showBossFrame": true,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Chief Engineer Ishkar",
+            "id": 129,
+            "guid": 122369,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 1,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Felblade Shocktrooper",
+            "id": 127,
+            "guid": 122718,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 16,
+                    "groups": 7
+                }
+            ]
+        },
+        {
+            "name": "Fel-Charged Obfuscator",
+            "id": 113,
+            "guid": 124207,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 3,
+                    "groups": 5
+                }
+            ]
+        },
+        {
+            "name": "Shrapnel Blast",
+            "id": 149,
+            "guid": 124776,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 5,
+                    "groups": 1
+                }
+            ]
+        },
+        {
+            "name": "Pulse Grenade",
+            "id": 146,
+            "guid": 124928,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 7,
+                    "groups": 5
+                }
+            ]
+        },
+        {
+            "name": "F'harg",
+            "id": 120,
+            "guid": 122477,
+            "type": "Boss",
+            "fights": [
+                {
+                    "id": 6,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Entropic Mine",
+            "id": 130,
+            "guid": 122992,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 109,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Chief Engineer Ishkar",
+            "id": 125,
+            "guid": 130185,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 7,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Felguard",
+            "id": 107,
+            "guid": 123451,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 23,
+                    "groups": 3
+                }
+            ]
+        },
+        {
+            "name": "Reorigination Module",
+            "id": 75,
+            "guid": 127809,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 2,
+                    "instances": 7,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "Blingtron 6000",
+            "id": 142,
+            "guid": 101527,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 1,
+                    "groups": 4
+                }
+            ]
+        },
+        {
+            "name": "Conflagration",
+            "id": 148,
+            "guid": 124550,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 4,
+                    "groups": 2
+                }
+            ]
+        },
+        {
+            "name": "The Paraxis",
+            "id": 106,
+            "guid": 124445,
+            "type": "Boss",
+            "lockBossFrame": true,
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Traps!",
+            "id": 147,
+            "guid": 124686,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 13,
+                    "groups": 4
+                }
+            ]
+        },
+        {
+            "name": "Hungering Stalker",
+            "id": 105,
+            "guid": 123223,
+            "type": "NPC",
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 2
+                }
+            ]
+        }
+    ],
+    "friendlyPets": [
+        {
+            "name": "Chi-Ji",
+            "id": 111,
+            "guid": 100868,
+            "type": "Pet",
+            "petOwner": 11,
+            "fights": [
+                {
+                    "id": 5,
+                    "instances": 5
+                },
+                {
+                    "id": 6,
+                    "instances": 2
+                },
+                {
+                    "id": 7,
+                    "instances": 4
+                },
+                {
+                    "id": 8,
+                    "instances": 5
+                }
+            ]
+        },
+        {
+            "name": "Hati",
+            "id": 31,
+            "guid": 106551,
+            "type": "Pet",
+            "petOwner": 17,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 3
+                },
+                {
+                    "id": 3,
+                    "instances": 1
+                },
+                {
+                    "id": 4,
+                    "instances": 6
+                },
+                {
+                    "id": 5,
+                    "instances": 2
+                },
+                {
+                    "id": 6,
+                    "instances": 1
+                },
+                {
+                    "id": 7,
+                    "instances": 2
+                },
+                {
+                    "id": 8,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Doomguard",
+            "id": 63,
+            "guid": 11859,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Army of the Dead",
+            "id": 92,
+            "guid": 24207,
+            "type": "Pet",
+            "petOwner": 91,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 24
+                },
+                {
+                    "id": 5,
+                    "instances": 19
+                },
+                {
+                    "id": 6,
+                    "instances": 20
+                },
+                {
+                    "id": 7,
+                    "instances": 26
+                },
+                {
+                    "id": 8,
+                    "instances": 31
+                }
+            ]
+        },
+        {
+            "name": "Val'kyr Battlemaiden",
+            "id": 96,
+            "guid": 100876,
+            "type": "Pet",
+            "petOwner": 91,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 3
+                },
+                {
+                    "id": 5,
+                    "instances": 2
+                },
+                {
+                    "id": 6,
+                    "instances": 2
+                },
+                {
+                    "id": 7,
+                    "instances": 3
+                },
+                {
+                    "id": 8,
+                    "instances": 3
+                }
+            ]
+        },
+        {
+            "name": "Sneaky Snake",
+            "id": 40,
+            "guid": 121661,
+            "type": "Pet",
+            "petOwner": 17,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 26
+                },
+                {
+                    "id": 2,
+                    "instances": 26
+                },
+                {
+                    "id": 3,
+                    "instances": 22
+                },
+                {
+                    "id": 4,
+                    "instances": 20
+                },
+                {
+                    "id": 5,
+                    "instances": 6
+                },
+                {
+                    "id": 6,
+                    "instances": 34
+                },
+                {
+                    "id": 7,
+                    "instances": 23
+                },
+                {
+                    "id": 8,
+                    "instances": 16
+                }
+            ]
+        },
+        {
+            "name": "Unstable Tear",
+            "id": 38,
+            "guid": 94584,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 5
+                }
+            ]
+        },
+        {
+            "name": "Greater Lightning Elemental",
+            "id": 56,
+            "guid": 97022,
+            "type": "Pet",
+            "petOwner": 4,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 5
+                },
+                {
+                    "id": 3,
+                    "instances": 3
+                },
+                {
+                    "id": 4,
+                    "instances": 5
+                },
+                {
+                    "id": 5,
+                    "instances": 6
+                },
+                {
+                    "id": 6,
+                    "instances": 3
+                }
+            ]
+        },
+        {
+            "name": "Spirit Wolf",
+            "id": 2,
+            "guid": 100820,
+            "type": "Pet",
+            "petOwner": 1,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 4
+                },
+                {
+                    "id": 2,
+                    "instances": 6
+                }
+            ]
+        },
+        {
+            "name": "Infernal",
+            "id": 36,
+            "guid": 89,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 2
+                }
+            ]
+        },
+        {
+            "name": "Greater Lightning Elemental",
+            "id": 54,
+            "guid": 97022,
+            "type": "Pet",
+            "petOwner": 13,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 4
+                },
+                {
+                    "id": 2,
+                    "instances": 5
+                }
+            ]
+        },
+        {
+            "name": "Flame Rift",
+            "id": 57,
+            "guid": 121643,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 4
+                }
+            ]
+        },
+        {
+            "name": "Beast",
+            "id": 28,
+            "guid": 128752,
+            "type": "Pet",
+            "petOwner": 6,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 43
+                },
+                {
+                    "id": 2,
+                    "instances": 67
+                }
+            ]
+        },
+        {
+            "name": "Sneaky Snake",
+            "id": 41,
+            "guid": 121661,
+            "type": "Pet",
+            "petOwner": 19,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 26
+                },
+                {
+                    "id": 2,
+                    "instances": 29
+                },
+                {
+                    "id": 3,
+                    "instances": 10
+                },
+                {
+                    "id": 4,
+                    "instances": 47
+                },
+                {
+                    "id": 5,
+                    "instances": 12
+                },
+                {
+                    "id": 6,
+                    "instances": 42
+                },
+                {
+                    "id": 7,
+                    "instances": 18
+                },
+                {
+                    "id": 8,
+                    "instances": 14
+                }
+            ]
+        },
+        {
+            "name": "Greater Fire Elemental",
+            "id": 29,
+            "guid": 95061,
+            "type": "Pet",
+            "petOwner": 13,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 2
+                },
+                {
+                    "id": 2,
+                    "instances": 3
+                }
+            ]
+        },
+        {
+            "name": "Kurken",
+            "id": 139,
+            "guid": 50491142,
+            "type": "Pet",
+            "petOwner": 19,
+            "fights": [
+                {
+                    "id": 8,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Sneaky Snake",
+            "id": 42,
+            "guid": 121661,
+            "type": "Pet",
+            "petOwner": 6,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 24
+                },
+                {
+                    "id": 2,
+                    "instances": 27
+                }
+            ]
+        },
+        {
+            "name": "Rune Weapon",
+            "id": 24,
+            "guid": 27893,
+            "type": "Pet",
+            "petOwner": 10,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 2
+                },
+                {
+                    "id": 2,
+                    "instances": 2
+                },
+                {
+                    "id": 3,
+                    "instances": 2
+                },
+                {
+                    "id": 4,
+                    "instances": 4
+                },
+                {
+                    "id": 5,
+                    "instances": 4
+                },
+                {
+                    "id": 6,
+                    "instances": 4
+                },
+                {
+                    "id": 7,
+                    "instances": 2
+                },
+                {
+                    "id": 8,
+                    "instances": 6
+                }
+            ]
+        },
+        {
+            "name": "Infernal",
+            "id": 37,
+            "guid": 108452,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 3
+                }
+            ]
+        },
+        {
+            "name": "Efflorescence",
+            "id": 46,
+            "guid": 47649,
+            "type": "Pet",
+            "petOwner": 9,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 5
+                },
+                {
+                    "id": 2,
+                    "instances": 10
+                },
+                {
+                    "id": 3,
+                    "instances": 5
+                },
+                {
+                    "id": 4,
+                    "instances": 12
+                },
+                {
+                    "id": 5,
+                    "instances": 2
+                },
+                {
+                    "id": 6,
+                    "instances": 6
+                },
+                {
+                    "id": 7,
+                    "instances": 9
+                },
+                {
+                    "id": 8,
+                    "instances": 8
+                }
+            ]
+        },
+        {
+            "name": "Azkol",
+            "id": 30,
+            "guid": 38346227,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Sludgeboil",
+            "id": 95,
+            "guid": 42633347,
+            "type": "Pet",
+            "petOwner": 91,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 1
+                },
+                {
+                    "id": 5,
+                    "instances": 1
+                },
+                {
+                    "id": 6,
+                    "instances": 1
+                },
+                {
+                    "id": 7,
+                    "instances": 1
+                },
+                {
+                    "id": 8,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Gara",
+            "id": 25,
+            "guid": 50612381,
+            "type": "Pet",
+            "petOwner": 19,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                },
+                {
+                    "id": 3,
+                    "instances": 1
+                },
+                {
+                    "id": 4,
+                    "instances": 1
+                },
+                {
+                    "id": 5,
+                    "instances": 1
+                },
+                {
+                    "id": 6,
+                    "instances": 1
+                },
+                {
+                    "id": 7,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Imp",
+            "id": 35,
+            "guid": 416,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 5
+                }
+            ]
+        },
+        {
+            "name": "Chaos Tear",
+            "id": 33,
+            "guid": 108493,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 5
+                }
+            ]
+        },
+        {
+            "name": "Hati",
+            "id": 34,
+            "guid": 106551,
+            "type": "Pet",
+            "petOwner": 19,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 3
+                },
+                {
+                    "id": 2,
+                    "instances": 2
+                },
+                {
+                    "id": 3,
+                    "instances": 2
+                },
+                {
+                    "id": 4,
+                    "instances": 7
+                },
+                {
+                    "id": 5,
+                    "instances": 5
+                },
+                {
+                    "id": 6,
+                    "instances": 2
+                },
+                {
+                    "id": 7,
+                    "instances": 2
+                },
+                {
+                    "id": 8,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Hati",
+            "id": 27,
+            "guid": 106551,
+            "type": "Pet",
+            "petOwner": 6,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 2
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Loque",
+            "id": 22,
+            "guid": 52399928,
+            "type": "Pet",
+            "petOwner": 6,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Shambling Horror",
+            "id": 94,
+            "guid": 97055,
+            "type": "Pet",
+            "petOwner": 91,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 12
+                },
+                {
+                    "id": 5,
+                    "instances": 5
+                },
+                {
+                    "id": 6,
+                    "instances": 4
+                },
+                {
+                    "id": 7,
+                    "instances": 10
+                },
+                {
+                    "id": 8,
+                    "instances": 13
+                }
+            ]
+        },
+        {
+            "name": "Lightning Surge Totem",
+            "id": 100,
+            "guid": 61245,
+            "type": "Pet",
+            "petOwner": 4,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 4
+                },
+                {
+                    "id": 5,
+                    "instances": 3
+                }
+            ]
+        },
+        {
+            "name": "Jade Serpent Statue",
+            "id": 26,
+            "guid": 60849,
+            "type": "Pet",
+            "petOwner": 11,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                },
+                {
+                    "id": 4,
+                    "instances": 2
+                },
+                {
+                    "id": 5,
+                    "instances": 1
+                },
+                {
+                    "id": 6,
+                    "instances": 1
+                },
+                {
+                    "id": 7,
+                    "instances": 1
+                },
+                {
+                    "id": 8,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Mindbender",
+            "id": 88,
+            "guid": 62982,
+            "type": "Pet",
+            "petOwner": 77,
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 1
+                },
+                {
+                    "id": 4,
+                    "instances": 4
+                },
+                {
+                    "id": 6,
+                    "instances": 3
+                },
+                {
+                    "id": 7,
+                    "instances": 5
+                },
+                {
+                    "id": 8,
+                    "instances": 4
+                }
+            ]
+        },
+        {
+            "name": "Void Tendril",
+            "id": 80,
+            "guid": 98167,
+            "type": "Pet",
+            "petOwner": 77,
+            "fights": [
+                {
+                    "id": 3,
+                    "instances": 3
+                },
+                {
+                    "id": 4,
+                    "instances": 9
+                },
+                {
+                    "id": 5,
+                    "instances": 2
+                },
+                {
+                    "id": 6,
+                    "instances": 5
+                },
+                {
+                    "id": 7,
+                    "instances": 10
+                },
+                {
+                    "id": 8,
+                    "instances": 5
+                }
+            ]
+        },
+        {
+            "name": "Shadowy Tear",
+            "id": 43,
+            "guid": 99887,
+            "type": "Pet",
+            "petOwner": 5,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 2
+                },
+                {
+                    "id": 2,
+                    "instances": 6
+                }
+            ]
+        },
+        {
+            "name": "Silver",
+            "id": 21,
+            "guid": 41479237,
+            "type": "Pet",
+            "petOwner": 17,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 1
+                },
+                {
+                    "id": 3,
+                    "instances": 1
+                },
+                {
+                    "id": 4,
+                    "instances": 1
+                },
+                {
+                    "id": 5,
+                    "instances": 1
+                },
+                {
+                    "id": 6,
+                    "instances": 1
+                },
+                {
+                    "id": 7,
+                    "instances": 1
+                },
+                {
+                    "id": 8,
+                    "instances": 1
+                }
+            ]
+        },
+        {
+            "name": "Greater Fire Elemental",
+            "id": 44,
+            "guid": 95061,
+            "type": "Pet",
+            "petOwner": 4,
+            "fights": [
+                {
+                    "id": 1,
+                    "instances": 1
+                },
+                {
+                    "id": 2,
+                    "instances": 2
+                },
+                {
+                    "id": 3,
+                    "instances": 2
+                },
+                {
+                    "id": 4,
+                    "instances": 2
+                },
+                {
+                    "id": 5,
+                    "instances": 2
+                },
+                {
+                    "id": 6,
+                    "instances": 1
+                }
+            ]
+        }
+    ],
+    "enemyPets": [
+        {
+            "name": "Felsilk Web",
+            "id": 102,
+            "guid": 122897,
+            "type": "Pet",
+            "petOwner": 14,
+            "fights": [
+                {
+                    "id": 4,
+                    "instances": 1
+                }
+            ]
+        }
+    ],
+    "phases": [
+        {
+            "boss": 2082,
+            "phases": [
+                "Stage One: Attack Force",
+                "Stage Two: Contract to Kill",
+                "Stage Three: The Perfect Weapon",
+                "Intermission: On Deadly Ground"
+            ]
+        },
+        {
+            "boss": 2064,
+            "phases": [
+                "Platform: Nexus",
+                "Platform: Xoroth",
+                "Platform: Rancora",
+                "Platform: Nathreza"
+            ]
+        },
+        {
+            "boss": 2070,
+            "phases": [
+                "Admiral Srivax",
+                "Chief Engineer Iskar",
+                "General Erodus"
+            ]
+        },
+        {
+            "boss": 2076,
+            "phases": [
+                "Normal Phase",
+                "Apocalypse Drive Phase"
+            ]
+        },
+        {
+            "boss": 2092,
+            "phases": [
+                "Stage One: Storm and Sky",
+                "Stage Two: The Protector Redeemed",
+                "Stage Three: The Arcane Masters",
+                "Stage Four: The Gift of Life, The Forge of Loss"
+            ]
+        },
+        {
+            "boss": 2063,
+            "phases": [
+                "Stage One: Wrath of Aggramar",
+                "Intermission: Fires of Taeshalach",
+                "Stage Two: Champion of Sargeras",
+                "Intemission: Taeshalach's Rage",
+                "Stage Three: The Avenger"
+            ]
+        }
+    ],
+    "title": "What Guild? A, tBT N\/H",
+    "owner": "Lasarion",
+    "start": 1517968009755,
+    "end": 1517973782567,
+    "zone": 17
+}
