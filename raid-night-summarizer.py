@@ -10,6 +10,7 @@ import string
 import datetime
 import re
 import pprint
+from scrape_parse_data import scrape_damage_parse_data
 
 def make_pretty_time(milliseconds):
     seconds = round(milliseconds/1000)
@@ -51,6 +52,7 @@ class Raidnight_Data(object):
                     self.deaths = file_dict['deaths']
                     self.fights = file_dict['fights']
                     self.wipes = file_dict['wipes']
+                    self.parse_data = file_dict['parse-data']
                 return
         
         ## Continue to wcl api for data
@@ -86,6 +88,8 @@ class Raidnight_Data(object):
         self.damage_done = dict()
         self.healing = dict()
         self.deaths = dict()
+        self.parse_data = dict()
+
         ## add data for each fight under '[difficulty] [bossname]' in appropriate dictionary (for kill-only categories)
                                         ## '[difficulty] [bossname] [number]' for all-pull categories like deaths
         for fight in self.fights['fights']:
@@ -109,6 +113,10 @@ class Raidnight_Data(object):
                     self.wipes[fight['name']] += 1
                 continue
 
+            # scrape parse data from wcl website
+            self.parse_data[fight['name']] = scrape_damage_parse_data(self.wcl_string,fight['id'])
+
+            # query api for damage-done and healing
             api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_tables_url,"damage-done","/",self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key]))
             api_return_buffer = BytesIO()
             api_curl.setopt(api_curl.WRITEDATA, api_return_buffer)
@@ -131,7 +139,8 @@ class Raidnight_Data(object):
                     'damage-done': self.damage_done,
                     'healing': self.healing,
                     'deaths': self.deaths,
-                    'wipes': self.wipes}
+                    'wipes': self.wipes,
+                    'parse-data': self.parse_data}
         with open(self.name+'('+initializationdata+').json','w') as open_file:
             print("Writing to file...")
             open_file.write(json.dumps(writedict,indent=4))
@@ -151,6 +160,13 @@ class Raidnight_Data(object):
             for entry in self.healing[fight]['entries']:
                 all_hps.add((entry['name'],int(entry['total']/fight_time*1000),fight,fight_time))
         return all_hps
+    def dps_parse_set(self):
+        all_dps_parses = set()
+        for fight in self.parse_data:
+            for entry in self.parse_data[fight]:
+                all_dps_parses.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],fight))
+        return all_dps_parses
+
     
     # returns a dict[playername]:death_count
     def deaths_dict(self):
@@ -166,12 +182,15 @@ class Raidnight_Data(object):
     
     def get_wipes(self):
         return self.wipes
+    
+    def get_parse_data(self):
+        return self.parse_data
 
 
-'''
-TEST STUFF
 test = Raidnight_Data('2fRjG8HcKWhLnXCy')
-dps_tuples = test.dps_set()
+dps_parse_tuples = test.dps_parse_set()
+pprint.pprint(sorted(dps_parse_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
+'''dps_tuples = test.dps_set()
 pprint.pprint(sorted(dps_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
 hps_tuples = test.hps_set()
 pprint.pprint(sorted(hps_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
