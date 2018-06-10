@@ -18,6 +18,18 @@ def make_pretty_time(milliseconds):
     seconds = str(seconds%60)
     return ':'.join([minutes,seconds.zfill(2)])
 
+def make_pretty_number(psnumber, numbertype):
+    if psnumber >= 1000000:
+        return "%d.%sM %s" % (psnumber//1000000, str(round((psnumber%1000000)/10000)).zfill(2), numbertype)
+    else:
+        return "%dk  %s" % (round(psnumber/1000), numbertype)
+
+def make_pretty_dps(dps):
+    return make_pretty_number(dps,'DPS')
+
+def make_pretty_hps(hps):
+    return make_pretty_number(hps,'HPS')
+
 ## This class holds all information for a raid night
 class Raidnight_Data(object):
     base_fights_url = "https://www.warcraftlogs.com:443/v1/report/fights/"
@@ -107,14 +119,14 @@ class Raidnight_Data(object):
 
             # skip remaining entries for wipes
             if not fight['kill']:
-                if fight['name'] not in self.wipes:
-                    self.wipes[fight['name']] = 1
+                if temp_fight_name not in self.wipes:
+                    self.wipes[temp_fight_name] = 1
                 else:
-                    self.wipes[fight['name']] += 1
+                    self.wipes[temp_fight_name] += 1
                 continue
 
             # scrape parse data from wcl website
-            self.parse_data[fight['name']] = scrape_damage_parse_data(self.wcl_string,fight['id'])
+            self.parse_data[temp_fight_name] = scrape_damage_parse_data(self.wcl_string,fight['id'])
 
             # query api for damage-done and healing
             api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_tables_url,"damage-done","/",self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key]))
@@ -145,7 +157,10 @@ class Raidnight_Data(object):
             print("Writing to file...")
             open_file.write(json.dumps(writedict,indent=4))
 
-    ## return a set of tuples (playername, dps/hps, bossname, prettyfightdurationstring)
+    def get_fight_time(self, boss_diff_and_name):
+        return self.damage_done[boss_diff_and_name]['totalTime']
+
+    ## return a set of tuples (playername, dps/hps, bossname, fightduration (ms))
     def dps_set(self):
         all_dps = set()
         for fight in self.damage_done:
@@ -160,11 +175,13 @@ class Raidnight_Data(object):
             for entry in self.healing[fight]['entries']:
                 all_hps.add((entry['name'],int(entry['total']/fight_time*1000),fight,fight_time))
         return all_hps
+    # dps parses returned as (playername, overallparse, ilvlparse, bossname, fightduration (ms))
     def dps_parse_set(self):
         all_dps_parses = set()
         for fight in self.parse_data:
+            fight_time = self.get_fight_time(fight)
             for entry in self.parse_data[fight]:
-                all_dps_parses.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],fight))
+                all_dps_parses.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],fight,fight_time))
         return all_dps_parses
 
     
@@ -185,11 +202,69 @@ class Raidnight_Data(object):
     
     def get_parse_data(self):
         return self.parse_data
+    
+    def get_dps(self, player_name, boss_diff_and_name):
+        fight_duration = self.damage_done[boss_diff_and_name]['totalTime']
+        for entry in self.damage_done[boss_diff_and_name]['entries']:
+            if entry['name'] == player_name:
+                return int(entry['total']/fight_duration*1000)
+    
 
 
 test = Raidnight_Data('2fRjG8HcKWhLnXCy')
-dps_parse_tuples = test.dps_parse_set()
-pprint.pprint(sorted(dps_parse_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
+
+
+## returns a sorted set of tuples representing the best-in-class performance for the raid night
+def get_best(raidnight_object, metric, get_amount):
+    metric_switch = {'dps': lambda x: sorted(raidnight_object.dps_set(), key=lambda y: y[1], reverse=True)[:x],
+                    'ilvl-parse': lambda x: sorted(raidnight_object.dps_parse_set(), key=lambda y:y[2],reverse=True)[:x],
+                    'overall-parse': lambda x: sorted(raidnight_object.dps_parse_set(), key=lambda y:y[1],reverse=True)[:x],
+                    'hps': lambda x: sorted(raidnight_object.hps_set(), key=lambda y: y[1], reverse=True)[:x]}
+    
+    return metric_switch[metric](get_amount)
+
+def get_best_dps(raidnight_object, get_amount):
+    return get_best(raidnight_object, 'dps', get_amount)
+
+def get_best_hps(raidnight_object, get_amount):
+    return get_best(raidnight_object, 'hps', get_amount)
+
+def get_best_ilvl_parse(raidnight_object, get_amount):
+    return get_best(raidnight_object, 'ilvl-parse', get_amount)
+
+def get_best_overall_parse(raidnight_object, get_amount):
+    return get_best(raidnight_object, 'overall-parse', get_amount)
+
+## returns a custom-format report string for the given data
+def make_report_string(raidnight_object, data_tuple, metric):
+    pretty_time = make_pretty_time(data_tuple[-1])
+    if metric == 'overall-parse' or metric == 'ilvl-parse':
+        pretty_dps = make_pretty_dps(raidnight_object.get_dps(data_tuple[0], data_tuple[3]))
+
+    metric_switch = {'overall-parse': lambda x: '{:<17}'.format('(%d) %s' % (x[1], x[0])) + ' -- %s (%s, %s)' % (pretty_dps, x[3], pretty_time),
+                    'ilvl-parse': lambda x: '{:<17}'.format('(%d) %s' % (x[2], x[0])) + ' -- %s (%s, %s)' % (pretty_dps, x[3], pretty_time),
+                    'dps': lambda x: '{:<12}'.format(x[0]) + ' -- %s (%s, %s)' % (make_pretty_dps(x[1]), x[2], pretty_time),
+                    'hps': lambda x: '{:<12}'.format(x[0]) + ' -- %s (%s, %s)' % (make_pretty_hps(x[1]), x[2], pretty_time)}
+
+    return metric_switch[metric](data_tuple)
+
+def make_dps_report_string(raidnight_object, data_tuple):
+    return make_report_string(raidnight_object, data_tuple, 'dps')
+def make_hps_report_string(raidnight_object, data_tuple):
+    return make_report_string(raidnight_object, data_tuple, 'hps')
+def make_overall_parse_report_string(raidnight_object, data_tuple):
+    return make_report_string(raidnight_object, data_tuple, 'overall-parse')
+def make_ilvl_parse_report_string(raidnight_object, data_tuple):
+    return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
+
+print("Healing Parses")
+for data_tuple in get_best_dps(test,8):
+    print(make_dps_report_string(test, data_tuple))
+print("Overall Parses:")
+for data_tuple in get_best_overall_parse(test,8):
+    print(make_overall_parse_report_string(test, data_tuple))
+'''for entry in sorted(dps_parse_tuples, key=lambda x:x[1],reverse=True)[:5]:
+    print('%s (%d) -- %s (%s, %s)' % (entry[0], entry[1], make_pretty_dps(test.get_dps(entry[0],entry[3])), entry[3], make_pretty_time(test.get_fight_time(entry[3]))))'''
 '''dps_tuples = test.dps_set()
 pprint.pprint(sorted(dps_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
 hps_tuples = test.hps_set()

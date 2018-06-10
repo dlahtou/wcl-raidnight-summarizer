@@ -50560,249 +50560,204 @@
         }
     },
     "wipes": {
-        "Aggramar": 2,
-        "The Coven of Shivarra": 1
+        "Heroic Aggramar": 2,
+        "Heroic The Coven of Shivarra": 1
     },
     "parse-data": {
-        "Aggramar": [
+        "Heroic Aggramar": [
             {
                 "name": "Kolericus",
-                "overall-performance": "47",
-                "ilvl-performance": "36"
+                "overall-performance": 47,
+                "ilvl-performance": 36
             },
             {
                 "name": "Thebatman",
-                "overall-performance": "37",
-                "ilvl-performance": "57"
+                "overall-performance": 37,
+                "ilvl-performance": 57
             },
             {
                 "name": "Islaya",
-                "overall-performance": "37",
-                "ilvl-performance": "31"
+                "overall-performance": 37,
+                "ilvl-performance": 31
             },
             {
                 "name": "Bradney",
-                "overall-performance": "28",
-                "ilvl-performance": "27"
+                "overall-performance": 28,
+                "ilvl-performance": 27
             },
             {
                 "name": "Revarak",
-                "overall-performance": "14",
-                "ilvl-performance": "10"
+                "overall-performance": 14,
+                "ilvl-performance": 10
             },
             {
                 "name": "Bodaciousben",
-                "overall-performance": "31",
-                "ilvl-performance": "23"
+                "overall-performance": 31,
+                "ilvl-performance": 23
             },
             {
                 "name": "Creygtong",
-                "overall-performance": "11",
-                "ilvl-performance": "40"
+                "overall-performance": 11,
+                "ilvl-performance": 40
             },
             {
                 "name": "Plaidpally",
-                "overall-performance": "12",
-                "ilvl-performance": "22"
-            },
-            {
-                "name": "Potatosack",
-                "overall-performance": "96",
-                "ilvl-performance": "95"
-            },
-            {
-                "name": "Dem\u00edan",
-                "overall-performance": "45",
-                "ilvl-performance": "43"
-            },
-            {
-                "name": "Grezgara",
-                "overall-performance": "40",
-                "ilvl-performance": "44"
+                "overall-performance": 12,
+                "ilvl-performance": 22
             },
             {
                 "name": "Hati",
-                "overall-performance": "-",
-                "ilvl-performance": "-"
+                "overall-performance": 0,
+                "ilvl-performance": 0
             }
         ],
-        "Argus the Unmaker": [
+        "Heroic Argus the Unmaker": [
             {
                 "name": "Towb",
-                "overall-performance": "78",
-                "ilvl-performance": "45"
+                "overall-performance": 78,
+                "ilvl-performance": 45
             },
             {
                 "name": "Sixshadows",
-                "overall-performance": "65",
-                "ilvl-performance": "96"
+                "overall-performance": 65,
+                "ilvl-performance": 96
             },
             {
                 "name": "Darktump",
-                "overall-performance": "51",
-                "ilvl-performance": "68"
+                "overall-performance": 51,
+                "ilvl-performance": 68
             },
             {
                 "name": "Bradney",
-                "overall-performance": "56",
-                "ilvl-performance": "51"
+                "overall-performance": 56,
+                "ilvl-performance": 51
             },
             {
                 "name": "Kolericus",
-                "overall-performance": "55",
-                "ilvl-performance": "50"
+                "overall-performance": 55,
+                "ilvl-performance": 50
             },
             {
                 "name": "Slyte",
-                "overall-performance": "46",
-                "ilvl-performance": "58"
+                "overall-performance": 46,
+                "ilvl-performance": 58
             },
             {
                 "name": "Islaya",
-                "overall-performance": "29",
-                "ilvl-performance": "24"
+                "overall-performance": 29,
+                "ilvl-performance": 24
             },
             {
                 "name": "Revarak",
-                "overall-performance": "26",
-                "ilvl-performance": "19"
+                "overall-performance": 26,
+                "ilvl-performance": 19
             },
             {
                 "name": "Thebatman",
-                "overall-performance": "24",
-                "ilvl-performance": "25"
+                "overall-performance": 24,
+                "ilvl-performance": 25
             },
             {
                 "name": "Bodaciousben",
-                "overall-performance": "44",
-                "ilvl-performance": "54"
+                "overall-performance": 44,
+                "ilvl-performance": 54
             },
             {
                 "name": "Plaidpally",
-                "overall-performance": "20",
-                "ilvl-performance": "37"
+                "overall-performance": 20,
+                "ilvl-performance": 37
             },
             {
                 "name": "Swagerish",
-                "overall-performance": "6",
-                "ilvl-performance": "4"
+                "overall-performance": 6,
+                "ilvl-performance": 4
             },
             {
                 "name": "Creygtong",
-                "overall-performance": "7",
-                "ilvl-performance": "39"
-            },
-            {
-                "name": "Grezgara",
-                "overall-performance": "82",
-                "ilvl-performance": "85"
-            },
-            {
-                "name": "Potatosack",
-                "overall-performance": "83",
-                "ilvl-performance": "83"
-            },
-            {
-                "name": "Dem\u00edan",
-                "overall-performance": "54",
-                "ilvl-performance": "55"
+                "overall-performance": 7,
+                "ilvl-performance": 39
             },
             {
                 "name": "Hati",
-                "overall-performance": "-",
-                "ilvl-performance": "-"
+                "overall-performance": 0,
+                "ilvl-performance": 0
             }
         ],
-        "The Coven of Shivarra": [
+        "Heroic The Coven of Shivarra": [
             {
                 "name": "Weeblikeme",
-                "overall-performance": "88",
-                "ilvl-performance": "99"
+                "overall-performance": 88,
+                "ilvl-performance": 99
             },
             {
                 "name": "Bradney",
-                "overall-performance": "67",
-                "ilvl-performance": "71"
+                "overall-performance": 67,
+                "ilvl-performance": 71
             },
             {
                 "name": "Revarak",
-                "overall-performance": "39",
-                "ilvl-performance": "40"
+                "overall-performance": 39,
+                "ilvl-performance": 40
             },
             {
                 "name": "N\u00edck",
-                "overall-performance": "63",
-                "ilvl-performance": "43"
+                "overall-performance": 63,
+                "ilvl-performance": 43
             },
             {
                 "name": "Elisaija",
-                "overall-performance": "51",
-                "ilvl-performance": "42"
+                "overall-performance": 51,
+                "ilvl-performance": 42
             },
             {
                 "name": "Vale\u00e1",
-                "overall-performance": "41",
-                "ilvl-performance": "38"
+                "overall-performance": 41,
+                "ilvl-performance": 38
             },
             {
                 "name": "Islaya",
-                "overall-performance": "36",
-                "ilvl-performance": "27"
+                "overall-performance": 36,
+                "ilvl-performance": 27
             },
             {
                 "name": "Bodaciousben",
-                "overall-performance": "52",
-                "ilvl-performance": "46"
+                "overall-performance": 52,
+                "ilvl-performance": 46
             },
             {
                 "name": "Omnislice",
-                "overall-performance": "13",
-                "ilvl-performance": "10"
+                "overall-performance": 13,
+                "ilvl-performance": 10
             },
             {
                 "name": "Breakinbad",
-                "overall-performance": "20",
-                "ilvl-performance": "49"
+                "overall-performance": 20,
+                "ilvl-performance": 49
             },
             {
                 "name": "Kolericus",
-                "overall-performance": "13",
-                "ilvl-performance": "7"
+                "overall-performance": 13,
+                "ilvl-performance": 7
             },
             {
                 "name": "Creygtong",
-                "overall-performance": "7",
-                "ilvl-performance": "33"
+                "overall-performance": 7,
+                "ilvl-performance": 33
             },
             {
                 "name": "Thebatman",
-                "overall-performance": "11",
-                "ilvl-performance": "11"
+                "overall-performance": 11,
+                "ilvl-performance": 11
             },
             {
                 "name": "Noraydrela",
-                "overall-performance": "8",
-                "ilvl-performance": "8"
-            },
-            {
-                "name": "Grezgara",
-                "overall-performance": "85",
-                "ilvl-performance": "88"
-            },
-            {
-                "name": "Potatosack",
-                "overall-performance": "78",
-                "ilvl-performance": "77"
-            },
-            {
-                "name": "Dem\u00edan",
-                "overall-performance": "41",
-                "ilvl-performance": "39"
+                "overall-performance": 8,
+                "ilvl-performance": 8
             },
             {
                 "name": "Hati",
-                "overall-performance": "-",
-                "ilvl-performance": "-"
+                "overall-performance": 0,
+                "ilvl-performance": 0
             }
         ]
     }
