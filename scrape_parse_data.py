@@ -4,9 +4,16 @@ import re
 from selenium.webdriver.firefox.options import Options
 
 def scrape_damage_parse_data(wcl_string,fight_id):
+    ignore_specs = {'Monk-Mistweaver',
+                    'Paladin-Holy',
+                    'Druid-Restoration',
+                    'Priest-Discipline',
+                    'Priest-Holy',
+                    'Shaman-Restoration'}
+
     options = Options()
     options.add_argument('--headless')
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(firefox_options=options)
 
     driver.get('https://www.warcraftlogs.com/reports/'+wcl_string+'#fight='+str(fight_id)+'&type=damage-done')
     html = driver.page_source
@@ -18,9 +25,18 @@ def scrape_damage_parse_data(wcl_string,fight_id):
     for tablerow in soup.find_all(id=re.compile('main-table-row')):
         if not tablerow.find(class_='main-table-performance') or not tablerow.find(class_='main-table-link') or not tablerow.find(class_='main-table-ilvl-performance'):
             continue
-        overall_performance = tablerow.find(class_='main-table-performance').a.string.strip()
+        if tablerow.img['src']:
+            if re.findall(r'^/(.+/)*(.+)\.',tablerow.img['src'])[-1][-1] in ignore_specs:
+                continue
+        try:
+            overall_performance = int(tablerow.find(class_='main-table-performance').a.string.strip().replace('*',''))
+        except:
+            overall_performance = 0
         player_name = tablerow.find(class_='main-table-link').a.string.strip()
-        ilvl_performance = tablerow.find(class_='main-table-ilvl-performance').a.string.strip()
+        try:
+            ilvl_performance = int(tablerow.find(class_='main-table-ilvl-performance').a.string.strip().replace('*',''))
+        except:
+            ilvl_performance = 0
         parse_data.append({'name': player_name,
                         'overall-performance': overall_performance,
                         'ilvl-performance': ilvl_performance})
