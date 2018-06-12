@@ -104,6 +104,8 @@ class Raidnight_Data(object):
         ## add data for each fight under '[difficulty] [bossname]' in appropriate dictionary (for kill-only categories)
                                         ## '[difficulty] [bossname] [number]' for all-pull categories like deaths
         for fight in self.fights['fights']:
+            if not fight['boss']:
+                continue
             temp_fight_name = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']],fight['name']])
             temp_fight_name_with_id = ' '.join([temp_fight_name, str(fight['id'])])
             print(temp_fight_name_with_id)
@@ -207,6 +209,26 @@ class Raidnight_Data(object):
         raid_release_date = raid_release_timestamps[raid_name]
         days_since_release = datetime.date.fromtimestamp(self.raidnight_date) - datetime.date.fromtimestamp(raid_release_date)
         return days_since_release.days//7
+    
+    def get_raid_duration(self):
+        start = datetime.datetime.fromtimestamp(self.fights['start']//1000) #timestamp in ms resolution
+        end = datetime.datetime.fromtimestamp(self.fights ['end']//1000)
+
+        duration_timedelta = end - start
+        duration_total = duration_timedelta.seconds #in seconds
+
+        duration_hours = duration_total//3600
+        duration_minutes = (duration_total%3600)//60
+        duration_seconds = duration_total%60
+
+        return ':'.join([str(duration_hours), str(duration_minutes), str(duration_seconds)])
+    
+    def get_kill_count(self):
+        kill_count = 0
+        for fight in self.fights['fights']:
+            if fight['boss'] and fight['kill']:
+                kill_count += 1
+        return kill_count
 
 
 ## returns a sorted set of tuples representing the best-in-class performance for the raid night
@@ -220,13 +242,10 @@ def get_best(raidnight_object, metric, get_amount):
 
 def get_best_dps(raidnight_object, get_amount):
     return get_best(raidnight_object, 'dps', get_amount)
-
 def get_best_hps(raidnight_object, get_amount):
     return get_best(raidnight_object, 'hps', get_amount)
-
 def get_best_ilvl_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'ilvl-parse', get_amount)
-
 def get_best_overall_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'overall-parse', get_amount)
 
@@ -253,8 +272,39 @@ def make_ilvl_parse_report_string(raidnight_object, data_tuple):
     return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
 
 ## SANDBOX//TESTING
-test = Raidnight_Data('2fRjG8HcKWhLnXCy')
-print("Raw DPS:")
+test = Raidnight_Data('NqTnLRp1bQ7JdaPH')
+def make_complete_report(raidnight):
+    raid_difficulty = "Heroic"
+    raid_name = raidnight.get_zone_name_from_id(raidnight.fights['zone'])
+    raid_date = datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%m/%d/%y")
+
+    report_title = ' '.join([raid_difficulty, raid_name, raid_date])
+    print(report_title)
+    print("="*len(report_title))
+
+    print("Raid Duration: " + raidnight.get_raid_duration())
+
+    print("Bosses Down: " + str(raidnight.get_kill_count()))
+
+    print("\nWIPES: ")
+    for wipe in raidnight.wipes:
+        print(wipe + ": " + str(raidnight.wipes[wipe]))
+    
+    print("\nTOP ILVL DPS PERFORMANCES:")
+    for data_tuple in enumerate(get_best_ilvl_parse(raidnight,3),1):
+        print(str(data_tuple[0]) + ".) " + make_ilvl_parse_report_string(raidnight,data_tuple[1]))
+
+    print("\nTOP SPEC-WIDE DPS PERFORMANCES:")
+    for data_tuple in enumerate(get_best_overall_parse(test,3),1):
+        print(str(data_tuple[0]) + ".) " + make_overall_parse_report_string(test, data_tuple[1]))
+    
+    print("\nBEST HPS (SINGLE FIGHT):")
+    for data_tuple in enumerate(get_best_hps(test,3),1):
+        print(str(data_tuple[0]) + ".) " + make_hps_report_string(test, data_tuple[1]))    
+
+make_complete_report(test)
+    
+'''print("Raw DPS:")
 for data_tuple in get_best_dps(test,3):
     print(make_dps_report_string(test, data_tuple))
 print()
@@ -271,7 +321,7 @@ for data_tuple in get_best_ilvl_parse(test,5):
     print(make_ilvl_parse_report_string(test,data_tuple))
 
 print()
-print("Raid Week (Lockout Number): %d" % test.get_raid_lockout_period())
+print("Raid Week (Lockout Number): %d" % test.get_raid_lockout_period())'''
 '''for entry in sorted(dps_parse_tuples, key=lambda x:x[1],reverse=True)[:5]:
     print('%s (%d) -- %s (%s, %s)' % (entry[0], entry[1], make_pretty_dps(test.get_dps(entry[0],entry[3])), entry[3], make_pretty_time(test.get_fight_time(entry[3]))))'''
 '''dps_tuples = test.dps_set()
