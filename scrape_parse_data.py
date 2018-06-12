@@ -21,7 +21,7 @@ def scrape_damage_parse_data(wcl_string,fight_id):
 
     soup = BeautifulSoup(html, "lxml")
 
-    parse_data = []
+    single_fight_parse_scrape_data = []
     for tablerow in soup.find_all(id=re.compile('main-table-row')):
         if not tablerow.find(class_='main-table-performance') or not tablerow.find(class_='main-table-link') or not tablerow.find(class_='main-table-ilvl-performance'):
             continue
@@ -37,8 +37,8 @@ def scrape_damage_parse_data(wcl_string,fight_id):
             ilvl_performance = int(tablerow.find(class_='main-table-ilvl-performance').a.string.strip().replace('*',''))
         except:
             ilvl_performance = 0
-        parse_data.append({'name': player_name,
+        single_fight_parse_scrape_data.append({'name': player_name,
                         'overall-performance': overall_performance,
                         'ilvl-performance': ilvl_performance})
 
-    return parse_data
+    return single_fight_parse_scrape_data

@@ -11,6 +11,7 @@ import datetime
 import re
 import pprint
 from scrape_parse_data import scrape_damage_parse_data
+from API_keys import wcl_api_key
 
 def make_pretty_time(milliseconds):
     seconds = round(milliseconds/1000)
@@ -34,7 +35,7 @@ def make_pretty_hps(hps):
 class Raidnight_Data(object):
     base_fights_url = "https://www.warcraftlogs.com:443/v1/report/fights/"
     base_tables_url = "https://www.warcraftlogs.com:443/v1/report/tables/"
-    API_key = "bb7a652ddabff076285430d88b002dc8"
+    API_key = wcl_api_key()
     difficulty_dict = {1: "Raid-Finder",
                         2: "Normal",
                         3: "Heroic",
@@ -49,9 +50,16 @@ class Raidnight_Data(object):
             Each damage-done table is entered into the dictionary under the corresponding ID string from fights
         healing: The aggregate dictionary of wcl healing tables (kills only)
         deaths: The aggregate dictionary of wcl deaths tables (kills & wipes)
-        +damage-parses: The aggregate dictionary of wcl damage parse scrapes #reachgoal
+        parse_scrapes: The aggregate dictionary of wcl damage parse scrapes
         +healing-parses: The aggregate dictionary of wcl healing parse scrapes #reachgoal
     """
+    def get_zone_name_from_id(self, zoneid):
+        with open('zones.json','r') as open_file:
+            zones_dict = json.load(open_file)
+        for entry in zones_dict:
+            if entry['id'] == zoneid:
+                return entry['name']
+
     def __init__(self,initializationdata):
         ## Search working directory for matching filename
         for filename in [f for f in listdir() if isfile(f)]:
@@ -64,10 +72,11 @@ class Raidnight_Data(object):
                     self.deaths = file_dict['deaths']
                     self.fights = file_dict['fights']
                     self.wipes = file_dict['wipes']
-                    self.parse_data = file_dict['parse-data']
+                    self.parse_scrapes = file_dict['parse-scrapes']
+                    self.raidnight_date = file_dict['raidnight-date']
                 return
         
-        ## Continue to wcl api for data
+        ## Continue to wcl api for data if no matching filename
         print("Initializing from wcl api...")
         self.wcl_string = initializationdata
         
@@ -82,15 +91,11 @@ class Raidnight_Data(object):
         self.fights = json.loads(fights_json)
         
         ## gather zone/difficulty/date for name string
-        with open('zones.json','r') as open_file:
-            zones_dict = json.load(open_file)
-        for entry in zones_dict:
-            if entry['id'] == self.fights['zone']:
-                zone_name = '_'.join(entry['name'].replace(",","").split(' '))
-                break
-        fight_date = datetime.date.fromtimestamp(self.fights['start']//1000).strftime("%y-%m-%d")
+        zone_name = '_'.join(Raidnight_Data.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
+        self.raidnight_date = self.fights['start']//1000
+        raidnight_date_string = datetime.date.fromtimestamp(self.raidnight_date).strftime("%y-%m-%d")
         fight_difficulty_string = Raidnight_Data.difficulty_dict[self.fights['fights'][-1]['difficulty']]
-        self.name = '-'.join([zone_name,fight_difficulty_string,fight_date])
+        self.name = '-'.join([zone_name,fight_difficulty_string,raidnight_date_string])
         print(self.name)
 
         ## initialize wipe dict[bossname]:wipe_amount
@@ -100,7 +105,7 @@ class Raidnight_Data(object):
         self.damage_done = dict()
         self.healing = dict()
         self.deaths = dict()
-        self.parse_data = dict()
+        self.parse_scrapes = dict()
 
         ## add data for each fight under '[difficulty] [bossname]' in appropriate dictionary (for kill-only categories)
                                         ## '[difficulty] [bossname] [number]' for all-pull categories like deaths
@@ -126,7 +131,7 @@ class Raidnight_Data(object):
                 continue
 
             # scrape parse data from wcl website
-            self.parse_data[temp_fight_name] = scrape_damage_parse_data(self.wcl_string,fight['id'])
+            self.parse_scrapes[temp_fight_name] = scrape_damage_parse_data(self.wcl_string,fight['id'])
 
             # query api for damage-done and healing
             api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_tables_url,"damage-done","/",self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key]))
@@ -152,14 +157,15 @@ class Raidnight_Data(object):
                     'healing': self.healing,
                     'deaths': self.deaths,
                     'wipes': self.wipes,
-                    'parse-data': self.parse_data}
+                    'parse-scrapes': self.parse_scrapes,
+                    'raidnight-date': self.raidnight_date}
         with open(self.name+'('+initializationdata+').json','w') as open_file:
             print("Writing to file...")
-            open_file.write(json.dumps(writedict,indent=4))
+            json.dump(writedict,open_file,indent=4)
 
     def get_fight_time(self, boss_diff_and_name):
         return self.damage_done[boss_diff_and_name]['totalTime']
-
+        
     ## return a set of tuples (playername, dps/hps, bossname, fightduration (ms))
     def dps_set(self):
         all_dps = set()
@@ -178,9 +184,9 @@ class Raidnight_Data(object):
     # dps parses returned as (playername, overallparse, ilvlparse, bossname, fightduration (ms))
     def dps_parse_set(self):
         all_dps_parses = set()
-        for fight in self.parse_data:
+        for fight in self.parse_scrapes:
             fight_time = self.get_fight_time(fight)
-            for entry in self.parse_data[fight]:
+            for entry in self.parse_scrapes[fight]:
                 all_dps_parses.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],fight,fight_time))
         return all_dps_parses
 
@@ -200,8 +206,8 @@ class Raidnight_Data(object):
     def get_wipes(self):
         return self.wipes
     
-    def get_parse_data(self):
-        return self.parse_data
+    def get_parse_scrapes(self):
+        return self.parse_scrapes
     
     def get_dps(self, player_name, boss_diff_and_name):
         fight_duration = self.damage_done[boss_diff_and_name]['totalTime']
@@ -209,7 +215,13 @@ class Raidnight_Data(object):
             if entry['name'] == player_name:
                 return int(entry['total']/fight_duration*1000)
     
-
+    def get_raid_lockout_period(self):
+        with open('raid-release-dates.json','r') as open_file:
+            raid_release_timestamps = json.load(open_file)
+        raid_name = Raidnight_Data.get_zone_name_from_id(self, self.fights['zone'])
+        raid_release_date = raid_release_timestamps[raid_name]
+        days_since_release = datetime.date.fromtimestamp(self.raidnight_date) - datetime.date.fromtimestamp(raid_release_date)
+        return days_since_release.days//7
 
 test = Raidnight_Data('2fRjG8HcKWhLnXCy')
 
@@ -257,12 +269,24 @@ def make_overall_parse_report_string(raidnight_object, data_tuple):
 def make_ilvl_parse_report_string(raidnight_object, data_tuple):
     return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
 
-print("Healing Parses")
-for data_tuple in get_best_dps(test,8):
+print("Raw DPS:")
+for data_tuple in get_best_dps(test,3):
     print(make_dps_report_string(test, data_tuple))
+print()
+print("Raw Healing:")
+for data_tuple in get_best_hps(test,3):
+    print(make_hps_report_string(test, data_tuple))
+print()
 print("Overall Parses:")
-for data_tuple in get_best_overall_parse(test,8):
+for data_tuple in get_best_overall_parse(test,5):
     print(make_overall_parse_report_string(test, data_tuple))
+print()
+print("ilvl Parses:")
+for data_tuple in get_best_ilvl_parse(test,5):
+    print(make_ilvl_parse_report_string(test,data_tuple))
+
+print()
+print("Raid Week (Lockout Number): %d" % test.get_raid_lockout_period())
 '''for entry in sorted(dps_parse_tuples, key=lambda x:x[1],reverse=True)[:5]:
     print('%s (%d) -- %s (%s, %s)' % (entry[0], entry[1], make_pretty_dps(test.get_dps(entry[0],entry[3])), entry[3], make_pretty_time(test.get_fight_time(entry[3]))))'''
 '''dps_tuples = test.dps_set()

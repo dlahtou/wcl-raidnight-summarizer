@@ -50563,7 +50563,7 @@
         "Heroic Aggramar": 2,
         "Heroic The Coven of Shivarra": 1
     },
-    "parse-data": {
+    "parse-scrapes": {
         "Heroic Aggramar": [
             {
                 "name": "Kolericus",
@@ -50572,38 +50572,38 @@
             },
             {
                 "name": "Thebatman",
-                "overall-performance": 37,
+                "overall-performance": 38,
                 "ilvl-performance": 57
             },
             {
                 "name": "Islaya",
-                "overall-performance": 37,
+                "overall-performance": 38,
                 "ilvl-performance": 31
             },
             {
                 "name": "Bradney",
                 "overall-performance": 28,
-                "ilvl-performance": 27
+                "ilvl-performance": 29
             },
             {
                 "name": "Revarak",
                 "overall-performance": 14,
-                "ilvl-performance": 10
+                "ilvl-performance": 9
             },
             {
                 "name": "Bodaciousben",
                 "overall-performance": 31,
-                "ilvl-performance": 23
+                "ilvl-performance": 28
             },
             {
                 "name": "Creygtong",
                 "overall-performance": 11,
-                "ilvl-performance": 40
+                "ilvl-performance": 41
             },
             {
                 "name": "Plaidpally",
-                "overall-performance": 12,
-                "ilvl-performance": 22
+                "overall-performance": 13,
+                "ilvl-performance": 19
             },
             {
                 "name": "Hati",
@@ -50634,48 +50634,48 @@
             },
             {
                 "name": "Kolericus",
-                "overall-performance": 55,
-                "ilvl-performance": 50
+                "overall-performance": 56,
+                "ilvl-performance": 51
             },
             {
                 "name": "Slyte",
-                "overall-performance": 46,
-                "ilvl-performance": 58
+                "overall-performance": 47,
+                "ilvl-performance": 59
             },
             {
                 "name": "Islaya",
                 "overall-performance": 29,
-                "ilvl-performance": 24
+                "ilvl-performance": 23
             },
             {
                 "name": "Revarak",
                 "overall-performance": 26,
-                "ilvl-performance": 19
+                "ilvl-performance": 17
             },
             {
                 "name": "Thebatman",
                 "overall-performance": 24,
-                "ilvl-performance": 25
+                "ilvl-performance": 26
             },
             {
                 "name": "Bodaciousben",
                 "overall-performance": 44,
-                "ilvl-performance": 54
+                "ilvl-performance": 56
             },
             {
                 "name": "Plaidpally",
                 "overall-performance": 20,
-                "ilvl-performance": 37
+                "ilvl-performance": 35
             },
             {
                 "name": "Swagerish",
-                "overall-performance": 6,
+                "overall-performance": 7,
                 "ilvl-performance": 4
             },
             {
                 "name": "Creygtong",
-                "overall-performance": 7,
-                "ilvl-performance": 39
+                "overall-performance": 8,
+                "ilvl-performance": 40
             },
             {
                 "name": "Hati",
@@ -50686,7 +50686,7 @@
         "Heroic The Coven of Shivarra": [
             {
                 "name": "Weeblikeme",
-                "overall-performance": 88,
+                "overall-performance": 87,
                 "ilvl-performance": 99
             },
             {
@@ -50697,57 +50697,57 @@
             {
                 "name": "Revarak",
                 "overall-performance": 39,
-                "ilvl-performance": 40
+                "ilvl-performance": 41
             },
             {
                 "name": "N\u00edck",
-                "overall-performance": 63,
+                "overall-performance": 62,
                 "ilvl-performance": 43
             },
             {
                 "name": "Elisaija",
-                "overall-performance": 51,
-                "ilvl-performance": 42
+                "overall-performance": 50,
+                "ilvl-performance": 41
             },
             {
                 "name": "Vale\u00e1",
-                "overall-performance": 41,
-                "ilvl-performance": 38
+                "overall-performance": 40,
+                "ilvl-performance": 39
             },
             {
                 "name": "Islaya",
-                "overall-performance": 36,
-                "ilvl-performance": 27
+                "overall-performance": 35,
+                "ilvl-performance": 28
             },
             {
                 "name": "Bodaciousben",
                 "overall-performance": 52,
-                "ilvl-performance": 46
+                "ilvl-performance": 48
             },
             {
                 "name": "Omnislice",
-                "overall-performance": 13,
+                "overall-performance": 14,
                 "ilvl-performance": 10
             },
             {
                 "name": "Breakinbad",
                 "overall-performance": 20,
-                "ilvl-performance": 49
+                "ilvl-performance": 47
             },
             {
                 "name": "Kolericus",
-                "overall-performance": 13,
+                "overall-performance": 15,
                 "ilvl-performance": 7
             },
             {
                 "name": "Creygtong",
                 "overall-performance": 7,
-                "ilvl-performance": 33
+                "ilvl-performance": 39
             },
             {
                 "name": "Thebatman",
-                "overall-performance": 11,
-                "ilvl-performance": 11
+                "overall-performance": 12,
+                "ilvl-performance": 10
             },
             {
                 "name": "Noraydrela",
@@ -50760,5 +50760,6 @@
                 "ilvl-performance": 0
             }
         ]
-    }
+    },
+    "raidnight-date": 1519868716
 }
