@@ -12,6 +12,7 @@ import re
 import pprint
 from scrape_parse_data import scrape_damage_parse_data
 from API_keys import wcl_api_key
+from get_wcl_api import get_wcl_api_table, get_wcl_api_fights
 
 def make_pretty_time(milliseconds):
     seconds = round(milliseconds/1000)
@@ -34,7 +35,6 @@ def make_pretty_hps(hps):
 ## This class holds all information for a raid night
 class Raidnight_Data(object):
     base_fights_url = "https://www.warcraftlogs.com:443/v1/report/fights/"
-    base_tables_url = "https://www.warcraftlogs.com:443/v1/report/tables/"
     API_key = wcl_api_key()
     difficulty_dict = {1: "Raid-Finder",
                         2: "Normal",
@@ -81,14 +81,8 @@ class Raidnight_Data(object):
         self.wcl_string = initializationdata
         
         ## API call for fights
-        api_return_buffer = BytesIO()
-        api_curl = pycurl.Curl()
-        api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_fights_url,self.wcl_string,"?api_key=",Raidnight_Data.API_key]))
-        api_curl.setopt(api_curl.WRITEDATA, api_return_buffer)
-        api_curl.setopt(pycurl.CAINFO, certifi.where())
-        api_curl.perform()
-        fights_json = api_return_buffer.getvalue().decode('utf-8')
-        self.fights = json.loads(fights_json)
+        report_string = ''.join([self.wcl_string, "?api_key=", Raidnight_Data.API_key])
+        self.fights = get_wcl_api_fights(report_string)
         
         ## gather zone/difficulty/date for name string
         zone_name = '_'.join(Raidnight_Data.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
@@ -114,12 +108,11 @@ class Raidnight_Data(object):
             temp_fight_name_with_id = ' '.join([temp_fight_name, str(fight['id'])])
             print(temp_fight_name_with_id)
 
-            api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_tables_url, "deaths", "/", self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key]))
-            api_return_buffer = BytesIO()
-            api_curl.setopt(api_curl.WRITEDATA, api_return_buffer)
-            api_curl.perform()
-            deaths_json = api_return_buffer.getvalue().decode('utf-8')
-            temp_deaths_dict = json.loads(deaths_json)
+            ## the common query string in api call for this fight
+            fight_api_call_string = ''.join(["/", self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key])
+
+            ## query deaths in fight
+            temp_deaths_dict = get_wcl_api_table("deaths"+fight_api_call_string)
             self.deaths[temp_fight_name_with_id] = temp_deaths_dict
 
             # skip remaining entries for wipes
@@ -133,23 +126,12 @@ class Raidnight_Data(object):
             # scrape parse data from wcl website
             self.parse_scrapes[temp_fight_name] = scrape_damage_parse_data(self.wcl_string,fight['id'])
 
-            # query api for damage-done and healing
-            api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_tables_url,"damage-done","/",self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key]))
-            api_return_buffer = BytesIO()
-            api_curl.setopt(api_curl.WRITEDATA, api_return_buffer)
-            api_curl.perform()
-            damage_json = api_return_buffer.getvalue().decode('utf-8')
-            temp_damage_dict = json.loads(damage_json)
-            api_curl.setopt(api_curl.URL,''.join([Raidnight_Data.base_tables_url,"healing","/",self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key]))
-            api_return_buffer = BytesIO()
-            api_curl.setopt(api_curl.WRITEDATA, api_return_buffer)
-            api_curl.perform()
-            healing_json = api_return_buffer.getvalue().decode('utf-8')
-            temp_healing_dict = json.loads(healing_json)
+            # query damage-done and healing
+            temp_damage_dict = get_wcl_api_table("damage-done"+fight_api_call_string)
+            temp_healing_dict = get_wcl_api_table("healing"+fight_api_call_string)
 
             self.damage_done[temp_fight_name] = temp_damage_dict
             self.healing[temp_fight_name] = temp_healing_dict
-        api_curl.close()
 
         ## save dictionary to file for later access
         writedict = {'fights': self.fights,
@@ -164,32 +146,33 @@ class Raidnight_Data(object):
             json.dump(writedict,open_file,indent=4)
 
     def get_fight_time(self, boss_diff_and_name):
-        return self.damage_done[boss_diff_and_name]['totalTime']
+        return self.damage_done[boss_diff_and_name]['totalTime'] ## in milliseconds
         
-    ## return a set of tuples (playername, dps/hps, bossname, fightduration (ms))
-    def dps_set(self):
-        all_dps = set()
-        for fight in self.damage_done:
-            fight_time = self.damage_done[fight]['totalTime'] # in milliseconds
-            for entry in self.damage_done[fight]['entries']:
-                all_dps.add((entry['name'],int(entry['total']/fight_time*1000),fight,fight_time))
-        return all_dps
-    def hps_set(self):
-        all_hps = set()
-        for fight in self.healing:
-            fight_time = self.healing[fight]['totalTime'] # in milliseconds
-            for entry in self.healing[fight]['entries']:
-                all_hps.add((entry['name'],int(entry['total']/fight_time*1000),fight,fight_time))
-        return all_hps
-    # dps parses returned as (playername, overallparse, ilvlparse, bossname, fightduration (ms))
-    def dps_parse_set(self):
-        all_dps_parses = set()
-        for fight in self.parse_scrapes:
-            fight_time = self.get_fight_time(fight)
-            for entry in self.parse_scrapes[fight]:
-                all_dps_parses.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],fight,fight_time))
-        return all_dps_parses
+    ## return a set of tuples (playername, dps/hps,[ilvl parse,] bossname, fightduration (ms))
+    def get_set(self, set_type):
+        return_set = set()
+        data_location = {'dps': self.damage_done,
+                        'hps': self.healing,
+                        'dps_parse': self.parse_scrapes}[set_type]
+        
+        for boss in data_location:
+            fight_time = self.get_fight_time(boss) # in milliseconds
+            ## dps/hps format
+            if set_type != 'dps_parse':
+                for entry in data_location[boss]['entries']:
+                    return_set.add((entry['name'],int(entry['total']/fight_time*1000),boss,fight_time))
+            ## parses format
+            else:
+                for entry in data_location[boss]:
+                    return_set.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],boss,fight_time))
+        return return_set
 
+    def dps_set(self):
+        return self.get_set('dps')
+    def hps_set(self):
+        return self.get_set('hps')
+    def dps_parse_set(self):
+        return self.get_set('dps_parse')
     
     # returns a dict[playername]:death_count
     def deaths_dict(self):
@@ -209,12 +192,14 @@ class Raidnight_Data(object):
     def get_parse_scrapes(self):
         return self.parse_scrapes
     
+    # returns dps for a given player and boss as an int
     def get_dps(self, player_name, boss_diff_and_name):
         fight_duration = self.damage_done[boss_diff_and_name]['totalTime']
         for entry in self.damage_done[boss_diff_and_name]['entries']:
             if entry['name'] == player_name:
                 return int(entry['total']/fight_duration*1000)
     
+    ## returns the number of weeks since raid release (0 = first normal/heroic week, 1 = first mythic week)
     def get_raid_lockout_period(self):
         with open('raid-release-dates.json','r') as open_file:
             raid_release_timestamps = json.load(open_file)
@@ -222,8 +207,6 @@ class Raidnight_Data(object):
         raid_release_date = raid_release_timestamps[raid_name]
         days_since_release = datetime.date.fromtimestamp(self.raidnight_date) - datetime.date.fromtimestamp(raid_release_date)
         return days_since_release.days//7
-
-test = Raidnight_Data('2fRjG8HcKWhLnXCy')
 
 
 ## returns a sorted set of tuples representing the best-in-class performance for the raid night
@@ -269,6 +252,8 @@ def make_overall_parse_report_string(raidnight_object, data_tuple):
 def make_ilvl_parse_report_string(raidnight_object, data_tuple):
     return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
 
+## SANDBOX//TESTING
+test = Raidnight_Data('2fRjG8HcKWhLnXCy')
 print("Raw DPS:")
 for data_tuple in get_best_dps(test,3):
     print(make_dps_report_string(test, data_tuple))
