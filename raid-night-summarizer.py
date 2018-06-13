@@ -1,4 +1,4 @@
-""" This program is intended to be the base for a comprehensive raid night summarizer """
+""" This script is intended to be the base for a comprehensive raid night summarizer """
 
 from os import listdir
 from os.path import isfile,join
@@ -14,45 +14,28 @@ from scrape_parse_data import scrape_damage_parse_data
 from API_keys import wcl_api_key
 from get_wcl_api import get_wcl_api_table, get_wcl_api_fights
 
-def make_pretty_time(milliseconds):
-    seconds = round(milliseconds/1000)
-    minutes = str(seconds//60)
-    seconds = str(seconds%60)
-    return ':'.join([minutes,seconds.zfill(2)])
-
-def make_pretty_number(psnumber, numbertype):
-    if psnumber >= 1000000:
-        return "%d.%sM %s" % (psnumber//1000000, str(round((psnumber%1000000)/10000)).zfill(2), numbertype)
-    else:
-        return "%dk  %s" % (round(psnumber/1000), numbertype)
-
-def make_pretty_dps(dps):
-    return make_pretty_number(dps,'DPS')
-
-def make_pretty_hps(hps):
-    return make_pretty_number(hps,'HPS')
-
 ## This class holds all information for a raid night
 class Raidnight_Data(object):
-    base_fights_url = "https://www.warcraftlogs.com:443/v1/report/fights/"
-    API_key = wcl_api_key()
-    difficulty_dict = {1: "Raid-Finder",
-                        2: "Normal",
-                        3: "Heroic",
-                        4: "Heroic"}
-
     """This class contains all pertinent data for a raidnight as found on warcraftlogs (wcl)
     Attributes:
         wcl-string: The 16-char alphanumeric identifier for the report on wcl
         name: The unique string with format "zone-difficulty-date" (e.g. "Nighthold-Heroic-05-07-2017")
         fights: The wcl-fights dictionary, containing fight metadata (direct api download)
         damage-done: The aggregate dictionary of wcl damage-done tables (kills only)
-            Each damage-done table is entered into the dictionary under the corresponding ID string from fights
+            Each damage-done & healing table is entered into the dictionary under the corresponding ID string from fights
         healing: The aggregate dictionary of wcl healing tables (kills only)
         deaths: The aggregate dictionary of wcl deaths tables (kills & wipes)
         parse_scrapes: The aggregate dictionary of wcl damage parse scrapes
-        +healing-parses: The aggregate dictionary of wcl healing parse scrapes #reachgoal
-    """
+        wipes: a dictionary of form {bossname: number}
+        raidnight_date: a unix timestamp
+        """
+
+    API_key = wcl_api_key()
+    difficulty_dict = {1: "Raid-Finder",
+                        2: "Flex",
+                        3: "Normal",
+                        4: "Heroic"}
+
     def get_zone_name_from_id(self, zoneid):
         with open('zones.json','r') as open_file:
             zones_dict = json.load(open_file)
@@ -188,12 +171,6 @@ class Raidnight_Data(object):
                     all_deaths[player_who_died] += 1
         return all_deaths
     
-    def get_wipes(self):
-        return self.wipes
-    
-    def get_parse_scrapes(self):
-        return self.parse_scrapes
-    
     # returns dps for a given player and boss as an int
     def get_dps(self, player_name, boss_diff_and_name):
         fight_duration = self.damage_done[boss_diff_and_name]['totalTime']
@@ -230,7 +207,6 @@ class Raidnight_Data(object):
                 kill_count += 1
         return kill_count
 
-
 ## returns a sorted set of tuples representing the best-in-class performance for the raid night
 def get_best(raidnight_object, metric, get_amount):
     metric_switch = {'dps': lambda x: sorted(raidnight_object.dps_set(), key=lambda y: y[1], reverse=True)[:x],
@@ -239,7 +215,6 @@ def get_best(raidnight_object, metric, get_amount):
                     'hps': lambda x: sorted(raidnight_object.hps_set(), key=lambda y: y[1], reverse=True)[:x]}
     
     return metric_switch[metric](get_amount)
-
 def get_best_dps(raidnight_object, get_amount):
     return get_best(raidnight_object, 'dps', get_amount)
 def get_best_hps(raidnight_object, get_amount):
@@ -248,6 +223,22 @@ def get_best_ilvl_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'ilvl-parse', get_amount)
 def get_best_overall_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'overall-parse', get_amount)
+
+## formatting for output strings
+def make_pretty_time(milliseconds):
+    seconds = round(milliseconds/1000)
+    minutes = str(seconds//60)
+    seconds = str(seconds%60)
+    return ':'.join([minutes,seconds.zfill(2)])
+def make_pretty_number(psnumber, numbertype):
+    if psnumber >= 1000000:
+        return "%d.%sM %s" % (psnumber//1000000, str(round((psnumber%1000000)/10000)).zfill(2), numbertype)
+    else:
+        return "%dk  %s" % (round(psnumber/1000), numbertype)
+def make_pretty_dps(dps):
+    return make_pretty_number(dps,'DPS')
+def make_pretty_hps(hps):
+    return make_pretty_number(hps,'HPS')
 
 ## returns a custom-format report string for the given data
 def make_report_string(raidnight_object, data_tuple, metric):
@@ -271,8 +262,6 @@ def make_overall_parse_report_string(raidnight_object, data_tuple):
 def make_ilvl_parse_report_string(raidnight_object, data_tuple):
     return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
 
-## SANDBOX//TESTING
-test = Raidnight_Data('NqTnLRp1bQ7JdaPH')
 def make_complete_report(raidnight):
     raid_difficulty = "Heroic"
     raid_name = raidnight.get_zone_name_from_id(raidnight.fights['zone'])
@@ -282,6 +271,7 @@ def make_complete_report(raidnight):
     print(report_title)
     print("="*len(report_title))
 
+    print("Raid Week (Lockout Number): %d" % test.get_raid_lockout_period())
     print("Raid Duration: " + raidnight.get_raid_duration())
 
     print("Bosses Down: " + str(raidnight.get_kill_count()))
@@ -302,32 +292,6 @@ def make_complete_report(raidnight):
     for data_tuple in enumerate(get_best_hps(test,3),1):
         print(str(data_tuple[0]) + ".) " + make_hps_report_string(test, data_tuple[1]))    
 
+## SANDBOX//TESTING
+test = Raidnight_Data('2fRjG8HcKWhLnXCy')
 make_complete_report(test)
-    
-'''print("Raw DPS:")
-for data_tuple in get_best_dps(test,3):
-    print(make_dps_report_string(test, data_tuple))
-print()
-print("Raw Healing:")
-for data_tuple in get_best_hps(test,3):
-    print(make_hps_report_string(test, data_tuple))
-print()
-print("Overall Parses:")
-for data_tuple in get_best_overall_parse(test,5):
-    print(make_overall_parse_report_string(test, data_tuple))
-print()
-print("ilvl Parses:")
-for data_tuple in get_best_ilvl_parse(test,5):
-    print(make_ilvl_parse_report_string(test,data_tuple))
-
-print()
-print("Raid Week (Lockout Number): %d" % test.get_raid_lockout_period())'''
-'''for entry in sorted(dps_parse_tuples, key=lambda x:x[1],reverse=True)[:5]:
-    print('%s (%d) -- %s (%s, %s)' % (entry[0], entry[1], make_pretty_dps(test.get_dps(entry[0],entry[3])), entry[3], make_pretty_time(test.get_fight_time(entry[3]))))'''
-'''dps_tuples = test.dps_set()
-pprint.pprint(sorted(dps_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
-hps_tuples = test.hps_set()
-pprint.pprint(sorted(hps_tuples, key=lambda x:x[1],reverse=True)[:5],indent=1)
-test_deaths = test.deaths_dict()
-pprint.pprint(test_deaths)
-print(test.get_wipes())'''
