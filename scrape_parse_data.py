@@ -25,6 +25,8 @@ def scrape_damage_parse_data(wcl_string,fight_id):
     for tablerow in soup.find_all(id=re.compile('main-table-row')):
         if not tablerow.find(class_='main-table-performance') or not tablerow.find(class_='main-table-link') or not tablerow.find(class_='main-table-ilvl-performance'):
             continue
+        if tablerow.find(class_='main-table-link').a.string.strip() == "Hati":
+            continue
         if tablerow.img['src']:
             if re.findall(r'^/(.+/)*(.+)\.',tablerow.img['src'])[-1][-1] in ignore_specs:
                 continue
