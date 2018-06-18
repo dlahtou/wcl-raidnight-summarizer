@@ -218,6 +218,23 @@ class Raidnight_Data(object):
             if fight['boss'] and fight['kill']:
                 kill_count += 1
         return kill_count
+    
+    def get_nonwipe_deaths(self):
+        ## dict format should be [bossname]: [player1, player2, player3]
+        nonwipe_deaths_dict = dict()
+        for fight in self.fights['fights']:
+            try:
+                if fight['kill'] == False:
+                    continue
+            except KeyError:
+                continue
+            player_death_list = []
+            deathdict_id = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']], fight['name'], str(fight['id'])])
+            for entry in self.deaths[deathdict_id]['entries']:
+                player_death_list.append(entry['name'])
+            nonwipe_deaths_dict[fight['name']] = player_death_list
+        return nonwipe_deaths_dict
+
 
 def make_differential_parse_dict(raidnight_object, raid_folder):
     this_weeks_parse_dict = raidnight_object.parse_scrapes
@@ -237,6 +254,7 @@ def make_differential_parse_dict(raidnight_object, raid_folder):
             ## TODO: pass over values if player died last week
             if player_name not in combined_prior_parse_dict[boss_diff_and_name].keys():
                 continue
+            
             this_weeks_overall_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-performance']
             last_weeks_overall_parse = combined_prior_parse_dict[boss_diff_and_name][player_name]['overall-performance']
             this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-difference'] = this_weeks_overall_parse - last_weeks_overall_parse
@@ -363,12 +381,9 @@ def make_complete_report(raidnight, report_filename):
 ## returns a list of raidnight objects in the folder that have the prior week's lockout period
 def get_prior_week_data(raidnight, raidfolder):
     raids_list = []
-    print(raidnight.get_raid_lockout_period())
-    print(datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%m/%d/%y"))
     for somefile in [f for f in listdir(raidfolder) if isfile(join(raidfolder,f))]:
         temp_raidnight = Raidnight_Data(somefile, raidfolder)
         if temp_raidnight.get_raid_lockout_period() + 1 == raidnight.get_raid_lockout_period():
-            print(datetime.date.fromtimestamp(temp_raidnight.raidnight_date).strftime("%m/%d/%y"))
             raids_list.append(temp_raidnight)
     return raids_list
 
