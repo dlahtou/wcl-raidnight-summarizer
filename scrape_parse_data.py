@@ -2,6 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import re
 from selenium.webdriver.firefox.options import Options
+import pprint
 
 def scrape_damage_parse_data(wcl_string,fight_id):
     ignore_specs = {'Monk-Mistweaver',
@@ -21,7 +22,7 @@ def scrape_damage_parse_data(wcl_string,fight_id):
 
     soup = BeautifulSoup(html, "lxml")
 
-    single_fight_parse_scrape_data = []
+    single_fight_parse_scrape_data = dict()
     for tablerow in soup.find_all(id=re.compile('main-table-row')):
         if not tablerow.find(class_='main-table-performance') or not tablerow.find(class_='main-table-link') or not tablerow.find(class_='main-table-ilvl-performance'):
             continue
@@ -31,16 +32,15 @@ def scrape_damage_parse_data(wcl_string,fight_id):
             if re.findall(r'^/(.+/)*(.+)\.',tablerow.img['src'])[-1][-1] in ignore_specs:
                 continue
         try:
-            overall_performance = int(tablerow.find(class_='main-table-performance').a.string.strip().replace('*',''))
+            overall_performance = int(tablerow.find(class_='main-table-performance').a.text.strip())
         except:
             overall_performance = 0
         player_name = tablerow.find(class_='main-table-link').a.string.strip()
         try:
-            ilvl_performance = int(tablerow.find(class_='main-table-ilvl-performance').a.string.strip().replace('*',''))
+            ilvl_performance = int(tablerow.find(class_='main-table-ilvl-performance').a.text.strip())
         except:
             ilvl_performance = 0
-        single_fight_parse_scrape_data.append({'name': player_name,
-                        'overall-performance': overall_performance,
-                        'ilvl-performance': ilvl_performance})
+        single_fight_parse_scrape_data[player_name] = ({'overall-performance': overall_performance,
+                                                        'ilvl-performance': ilvl_performance})
 
     return single_fight_parse_scrape_data
