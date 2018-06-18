@@ -47,7 +47,6 @@ class Raidnight_Data(object):
         ## Search working directory for matching filename
         for filename in [join(raid_folder, f) for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
             if re.search(re.escape(initializationdata),filename):
-                print("Initializing from file...")
                 with open(filename,'r') as open_file:
                     file_dict = json.load(open_file)
                     self.damage_done = file_dict['damage-done']
@@ -154,8 +153,8 @@ class Raidnight_Data(object):
                     return_set.add((entry['name'],int(entry['total']/fight_time*1000),boss,fight_time))
             ## parses format
             else:
-                for entry in data_location[boss]:
-                    return_set.add((entry['name'],entry['overall-performance'],entry['ilvl-performance'],boss,fight_time))
+                for entry in data_location[boss].keys():
+                    return_set.add((entry,data_location[boss][entry]['overall-performance'],data_location[boss][entry]['ilvl-performance'],boss,fight_time))
         return return_set
 
     def dps_set(self):
@@ -167,8 +166,8 @@ class Raidnight_Data(object):
     def raid_average_parse_set(self):
         return_set = set()
         for boss in self.parse_scrapes:
-            average_overall_parse = sum([x['overall-performance'] for x in self.parse_scrapes[boss]])/len(self.parse_scrapes[boss])
-            average_ilvl_parse = sum([x['ilvl-performance'] for x in self.parse_scrapes[boss]])/len(self.parse_scrapes[boss])
+            average_overall_parse = sum([self.parse_scrapes[boss][x]['overall-performance'] for x in self.parse_scrapes[boss].keys()])/len(self.parse_scrapes[boss])
+            average_ilvl_parse = sum([self.parse_scrapes[boss][x]['ilvl-performance'] for x in self.parse_scrapes[boss].keys()])/len(self.parse_scrapes[boss])
             return_set.add((boss, average_overall_parse, average_ilvl_parse))
         return return_set
     
@@ -220,6 +219,37 @@ class Raidnight_Data(object):
                 kill_count += 1
         return kill_count
 
+def make_differential_parse_dict(raidnight_object, raid_folder):
+    this_weeks_parse_dict = raidnight_object.parse_scrapes
+    raids_list = get_prior_week_data(raidnight_object, raid_folder)
+    prior_parse_dicts = [f.parse_scrapes for f in raids_list]
+    combined_prior_parse_dict = dict()
+    ## this is not a recursive merge, but there should be no clashes for a single raid team running the bosses once every week
+    for a_dict in prior_parse_dicts:
+        combined_prior_parse_dict = {**combined_prior_parse_dict, **a_dict}
+
+    ## update this_weeks_parse_dict with differential values if they exist
+    for boss_diff_and_name in this_weeks_parse_dict.keys():
+        #skip if boss does not occur in last week's data
+        if boss_diff_and_name not in combined_prior_parse_dict.keys():
+            continue
+        for player_name in this_weeks_parse_dict[boss_diff_and_name].keys():
+            ## TODO: pass over values if player died last week
+            if player_name not in combined_prior_parse_dict[boss_diff_and_name].keys():
+                continue
+            this_weeks_overall_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-performance']
+            last_weeks_overall_parse = combined_prior_parse_dict[boss_diff_and_name][player_name]['overall-performance']
+            this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-difference'] = this_weeks_overall_parse - last_weeks_overall_parse
+
+            this_weeks_ilvl_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-performance']
+            last_weeks_ilvl_parse = combined_prior_parse_dict[boss_diff_and_name][player_name]['ilvl-performance']
+            this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-difference'] = this_weeks_ilvl_parse - last_weeks_ilvl_parse
+
+            this_weeks_parse_dict[boss_diff_and_name][player_name]['last-weeks-overall-performance'] = last_weeks_overall_parse
+            this_weeks_parse_dict[boss_diff_and_name][player_name]['last-weeks-ilvl-performance'] = last_weeks_ilvl_parse   
+
+    return this_weeks_parse_dict
+
 ## returns a sorted set of tuples representing the best-in-class performance for the raid night
 def get_best(raidnight_object, metric, get_amount):
     metric_switch = {'dps': lambda x: sorted(raidnight_object.dps_set(), key=lambda y: y[1], reverse=True)[:x],
@@ -242,6 +272,21 @@ def get_best_raid_overall_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'raid-overall-parse', get_amount)
 def get_best_raid_ilvl_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'raid-ilvl-parse', get_amount)
+def get_best_parse_differential(raidnight_object, raid_folder, get_amount, parse_type):
+    parse_dict = make_differential_parse_dict(raidnight_object, raid_folder)
+    overall_difference_set = set()
+    for boss in parse_dict.keys():
+        for player in parse_dict[boss].keys():
+            try:
+                overall_difference_set.add((player,parse_dict[boss][player][parse_type + '-difference'],boss,parse_dict[boss][player][parse_type +'-performance'], parse_dict[boss][player]['last-weeks-'+parse_type+'-performance']))
+            except KeyError:
+                continue
+    return sorted(overall_difference_set, key = lambda x: x[1], reverse=True)[:get_amount]
+def get_best_overall_parse_differential(raidnight_object, raid_folder, get_amount):
+    return get_best_parse_differential(raidnight_object, raid_folder, get_amount, 'overall')
+def get_best_ilvl_parse_differential(raidnight_object, raid_folder, get_amount):
+    return get_best_parse_differential(raidnight_object, raid_folder, get_amount, 'ilvl')
+    
 
 ## formatting for output strings
 def make_pretty_time(milliseconds):
@@ -315,18 +360,25 @@ def make_complete_report(raidnight, report_filename):
     with open(report_filename, 'r') as open_file:
         print(open_file.read())
 
-def get_last_weeks_data(raidnight, raidfolder):
+## returns a list of raidnight objects in the folder that have the prior week's lockout period
+def get_prior_week_data(raidnight, raidfolder):
     raids_list = []
+    print(raidnight.get_raid_lockout_period())
+    print(datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%m/%d/%y"))
     for somefile in [f for f in listdir(raidfolder) if isfile(join(raidfolder,f))]:
         temp_raidnight = Raidnight_Data(somefile, raidfolder)
         if temp_raidnight.get_raid_lockout_period() + 1 == raidnight.get_raid_lockout_period():
+            print(datetime.date.fromtimestamp(temp_raidnight.raidnight_date).strftime("%m/%d/%y"))
             raids_list.append(temp_raidnight)
     return raids_list
 
 ## SANDBOX//TESTING
-test = Raidnight_Data('2fRjG8HcKWhLnXCy', 'MyDudes')
-for returned_raid in get_last_weeks_data(test, 'MyDudes'):
-    print(returned_raid.raid_name, returned_raid.get_raid_lockout_period(), datetime.date.fromtimestamp(returned_raid.raidnight_date).strftime("%m/%d/%y"))
+## TODO: Grab parse data directly from parse_scrapes dictionaries instead of tuples
+test = Raidnight_Data('PD3TtNynq6ZcMHrJ', 'MyDudes')
+for line in get_best_overall_parse_differential(test, 'MyDudes', 5):
+    print(line)
+for line in get_best_ilvl_parse_differential(test, 'MyDudes', 5):
+    print(line)
 
 ## raidlist = ['2fRjG8HcKWhLnXCy', 'PD3TtNynq6ZcMHrJ', 'NyWTfYb6FQAmHXn2', 'D1YNBdJMW27wFk6g', 'Zjbcv4kMK9QGBFyV', 'mzdah3G7qn2XtjvH']
 '''print(listdir('MyDudes'))
@@ -336,7 +388,8 @@ print([join(raid_folder,f) for f in listdir(raid_folder) if isfile(join(raid_fol
 '''for raidstring in raidlist:
     raid_data = Raidnight_Data(raidstring)
     print((raidstring, raid_data.get_raid_lockout_period()))'''
-'''test = Raidnight_Data('NqTnLRp1bQ7JdaPH')
+'''test = Raidnight_Data('NqTnLRp1bQ7JdaPH', 'MyDudes')
 print(get_best_raid_overall_parse(test,3))
-print(get_best_raid_ilvl_parse(test,3))'''
-#make_complete_report(test, 'firstoutputfile.txt')
+print(get_best_raid_ilvl_parse(test,3))
+print(get_best_ilvl_parse(test,3))
+make_complete_report(test, 'firstoutputfile.txt')'''
