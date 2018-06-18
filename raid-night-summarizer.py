@@ -232,7 +232,8 @@ class Raidnight_Data(object):
             deathdict_id = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']], fight['name'], str(fight['id'])])
             for entry in self.deaths[deathdict_id]['entries']:
                 player_death_list.append(entry['name'])
-            nonwipe_deaths_dict[fight['name']] = player_death_list
+            nonwipe_deathdict_id = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']], fight['name']])
+            nonwipe_deaths_dict[nonwipe_deathdict_id] = player_death_list
         return nonwipe_deaths_dict
 
 
@@ -240,10 +241,18 @@ def make_differential_parse_dict(raidnight_object, raid_folder):
     this_weeks_parse_dict = raidnight_object.parse_scrapes
     raids_list = get_prior_week_data(raidnight_object, raid_folder)
     prior_parse_dicts = [f.parse_scrapes for f in raids_list]
+    prior_simple_death_dicts = [f.get_nonwipe_deaths() for f in raids_list]
     combined_prior_parse_dict = dict()
-    ## this is not a recursive merge, but there should be no clashes for a single raid team running the bosses once every week
-    for a_dict in prior_parse_dicts:
-        combined_prior_parse_dict = {**combined_prior_parse_dict, **a_dict}
+    ## add dict entries to combined dict IF player did not die
+    for parse_dict,death_dict in zip(prior_parse_dicts, prior_simple_death_dicts):
+        for boss in parse_dict.keys():
+            if boss not in combined_prior_parse_dict:
+                combined_prior_parse_dict[boss] = dict()
+            for player in parse_dict[boss].keys():
+                if player in death_dict[boss]:
+                    continue
+                else:
+                    combined_prior_parse_dict[boss][player] = parse_dict[boss][player]
 
     ## update this_weeks_parse_dict with differential values if they exist
     for boss_diff_and_name in this_weeks_parse_dict.keys():
@@ -344,7 +353,7 @@ def make_overall_parse_report_string(raidnight_object, data_tuple):
 def make_ilvl_parse_report_string(raidnight_object, data_tuple):
     return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
 
-def make_complete_report(raidnight, report_filename):
+def make_complete_report(raidnight, raid_folder, report_filename):
     raid_difficulty = "Heroic"
     raid_name = raidnight.get_zone_name_from_id(raidnight.fights['zone'])
     raid_date = datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%m/%d/%y")
@@ -371,6 +380,14 @@ def make_complete_report(raidnight, report_filename):
         for data_tuple in enumerate(get_best_overall_parse(raidnight,3),1):
             open_file.write(str(data_tuple[0]) + ".) " + make_overall_parse_report_string(raidnight, data_tuple[1]) + '\n')
         
+        open_file.write("\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
+        for data_tuple in enumerate(get_best_ilvl_parse_differential(raidnight,raid_folder,5),1):
+            open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
+
+        open_file.write("\nMOST IMPROVED OVERALL DPS PERFORMANCES:\n")
+        for data_tuple in enumerate(get_best_overall_parse_differential(raidnight,raid_folder,5),1):
+            open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
+
         open_file.write("\nBEST HPS (SINGLE FIGHT):" + '\n')
         for data_tuple in enumerate(get_best_hps(raidnight,3),1):
             open_file.write(str(data_tuple[0]) + ".) " + make_hps_report_string(raidnight, data_tuple[1]) + '\n')
@@ -388,10 +405,11 @@ def get_prior_week_data(raidnight, raidfolder):
     return raids_list
 
 ## SANDBOX//TESTING
-## TODO: Grab parse data directly from parse_scrapes dictionaries instead of tuples
-test = Raidnight_Data('PD3TtNynq6ZcMHrJ', 'MyDudes')
+test = Raidnight_Data('NqTnLRp1bQ7JdaPH', 'MyDudes')
+print("OVERALL PARSE DIFFERENTIALS")
 for line in get_best_overall_parse_differential(test, 'MyDudes', 5):
     print(line)
+print("ILEVEL PARSE DIFFERENTIALS")
 for line in get_best_ilvl_parse_differential(test, 'MyDudes', 5):
     print(line)
 
