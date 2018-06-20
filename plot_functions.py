@@ -6,12 +6,24 @@ from textwrap import wrap
 import re
 import pandas as pd
 
+ordered_handles = {"Heroic Garothi Worldbreaker": 0,
+            "Heroic Felhounds of Sargeras": 1,
+            "Heroic The Defense of Eonar": 2,
+            "Heroic Portal Keeper Hasabel": 3,
+            "Heroic Antoran High Command": 4,
+            "Heroic Imonar the Soulhunter": 5,
+            "Heroic Kin'garoth": 6,
+            "Heroic Varimathras": 7,
+            "Heroic The Coven of Shivarra": 8,
+            "Heroic Aggramar": 9,
+            "Heroic Argus the Unmaker": 10}
+
 def get_parse_color(parse_number):
-    color_key = [(20, '#9d9d9d'),
-                (50, '#1eff00'),
-                (75, '#0070dd'),
-                (94, '#a335ee'),
-                (100, '#ff8000')]
+    color_key = [(20, '#9d9d9d'), #common-gray
+                (50, '#1eff00'), #uncommon-green
+                (75, '#0070dd'), #rare-blue
+                (94, '#a335ee'), #epic-purple
+                (100, '#ff8000')] #legendary-orange
     
     for colorcode in color_key:
         if parse_number <= colorcode[0]:
@@ -43,14 +55,14 @@ def make_avg_ilvl_parse_bar_plot(raidnight_object):
 def make_heroic_raid_avg_ilvl_parse_scatter_plot(raid_folder):
     average_parses = []
 
-    for filename in [join(raid_folder, f) for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
+    for filename in [f for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
         raidnight = Raidnight_Data(filename, 'MyDudes')
         date = pd.to_datetime(datetime.date.fromtimestamp(raidnight.raidnight_date))
 
         for boss in raidnight.parse_scrapes.keys():
             if not re.search('Heroic', boss):
                 continue
-            iparselist = [raidnight.parse_scrapes[boss][name]['overall-performance'] for name in raidnight.parse_scrapes[boss].keys() if name=="Bradney"]
+            iparselist = [raidnight.parse_scrapes[boss][name]['overall-performance'] for name in raidnight.parse_scrapes[boss].keys()]
             iparse_average = np.mean(iparselist)
             average_parses.append((boss, iparse_average, date))
     
@@ -67,17 +79,6 @@ def make_heroic_raid_avg_ilvl_parse_scatter_plot(raid_folder):
     ax.set_title("Raid Overall Parses by Date")
     ax.set_ylabel("Parse Percentile")
     ax.set_xlabel("Date")
-    ordered_handles = {"Heroic Garothi Worldbreaker": 0,
-                "Heroic Felhounds of Sargeras": 1,
-                "Heroic The Defense of Eonar": 2,
-                "Heroic Portal Keeper Hasabel": 3,
-                "Heroic Antoran High Command": 4,
-                "Heroic Imonar the Soulhunter": 5,
-                "Heroic Kin'garoth": 6,
-                "Heroic Varimathras": 7,
-                "Heroic The Coven of Shivarra": 8,
-                "Heroic Aggramar": 9,
-                "Heroic Argus the Unmaker": 10}
     
     handles, labels = ax.get_legend_handles_labels()
     handles, labels = zip(*sorted(zip(handles, labels), key=lambda x: ordered_handles[x[1]]))
@@ -130,4 +131,31 @@ def make_ilvl_chart(raid_folder, playername=None):
 
     plt.show()
 
-make_ilvl_chart('MyDudes')
+def make_raidstats_chart(raid_folder):
+    #TODO: raid duration, cumulative bosses down (heroic only AND normal only)
+    raidstats_data_columns = ["Date", "Duration"] + list(ordered_handles.keys())
+
+    raidstats_dictionary = dict()
+    for column_header in raidstats_data_columns:
+        raidstats_dictionary[column_header] = []
+
+    for filename in [f for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
+        raidnight = Raidnight_Data(filename, raid_folder)
+        date = pd.to_datetime(datetime.date.fromtimestamp(raidnight.raidnight_date))
+        raidstats_dictionary["Date"].append(date)
+
+        raidnight_duration = pd.to_timedelta(datetime.datetime.fromtimestamp(raidnight.fights['end']//1000) - datetime.datetime.fromtimestamp(raidnight.fights['start']//1000))
+        raidstats_dictionary["Duration"].append(raidnight_duration)
+
+        for boss in raidstats_data_columns[2:]:
+            if boss in raidnight.parse_scrapes.keys():
+                raidstats_dictionary[boss].append(1)
+            else:
+                raidstats_dictionary[boss].append(None)
+
+    raidstats_df = pd.DataFrame(raidstats_dictionary, columns=raidstats_data_columns)
+    raidstats_df.set_index("Date", inplace=True)
+    raidstats_df["Heroic Garothi Worldbreaker"].plot(marker='o', linestyle='')
+    plt.show()
+
+make_raidstats_chart('MyDudes')
