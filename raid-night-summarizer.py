@@ -73,7 +73,14 @@ class Raidnight_Data(object):
         self.raid_name = zone_name
         self.raidnight_date = self.fights['start']//1000
         raidnight_date_string = datetime.date.fromtimestamp(self.raidnight_date).strftime("%y-%m-%d")
-        fight_difficulty_string = Raidnight_Data.difficulty_dict[self.fights['fights'][-1]['difficulty']]
+        highest_difficulty = 1
+        for fight in self.fights['fights']:
+            try:
+                if fight['difficulty'] and fight['difficulty'] > highest_difficulty:
+                    highest_difficulty = fight['difficulty']
+            except KeyError:
+                pass
+        fight_difficulty_string = Raidnight_Data.difficulty_dict[highest_difficulty]
         self.raid_difficulty = fight_difficulty_string
         self.name = '-'.join([zone_name,fight_difficulty_string,raidnight_date_string])
         print(self.name)
@@ -406,6 +413,7 @@ def get_prior_week_data(raidnight, raidfolder):
 
 ## SANDBOX//TESTING
 test = Raidnight_Data('NqTnLRp1bQ7JdaPH', 'MyDudes')
+print(test.raid_name)
 print("OVERALL PARSE DIFFERENTIALS")
 for line in get_best_overall_parse_differential(test, 'MyDudes', 5):
     print(line)
@@ -413,14 +421,14 @@ print("ILEVEL PARSE DIFFERENTIALS")
 for line in get_best_ilvl_parse_differential(test, 'MyDudes', 5):
     print(line)
 
-## raidlist = ['2fRjG8HcKWhLnXCy', 'PD3TtNynq6ZcMHrJ', 'NyWTfYb6FQAmHXn2', 'D1YNBdJMW27wFk6g', 'Zjbcv4kMK9QGBFyV', 'mzdah3G7qn2XtjvH']
+raidlist = ['XT26GZHtjQraD4KP','Tncy19zRDZW3GXqY','q6fkh9WcarAPvLKF','KNnmg6yM9WVbv2rP','TGAcPg8V3H7tLCqy','d8DNKx6Yp1hPvmVf']
 '''print(listdir('MyDudes'))
 for filename in listdir('MyDudes'):
     print(join('MyDudes',filename))
 print([join(raid_folder,f) for f in listdir(raid_folder) if isfile(join(raid_folder,f))])'''
-'''for raidstring in raidlist:
-    raid_data = Raidnight_Data(raidstring)
-    print((raidstring, raid_data.get_raid_lockout_period()))'''
+for raidstring in raidlist:
+    raid_data = Raidnight_Data(raidstring, 'MyDudes')
+    print((raidstring, raid_data.get_raid_lockout_period()))
 '''test = Raidnight_Data('NqTnLRp1bQ7JdaPH', 'MyDudes')
 print(get_best_raid_overall_parse(test,3))
 print(get_best_raid_ilvl_parse(test,3))
