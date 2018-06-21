@@ -6,17 +6,17 @@ from textwrap import wrap
 import re
 import pandas as pd
 
-ordered_handles = {"Heroic Garothi Worldbreaker": 0,
-            "Heroic Felhounds of Sargeras": 1,
-            "Heroic The Defense of Eonar": 2,
-            "Heroic Portal Keeper Hasabel": 3,
-            "Heroic Antoran High Command": 4,
-            "Heroic Imonar the Soulhunter": 5,
-            "Heroic Kin'garoth": 6,
-            "Heroic Varimathras": 7,
-            "Heroic The Coven of Shivarra": 8,
-            "Heroic Aggramar": 9,
-            "Heroic Argus the Unmaker": 10}
+ordered_handles = {"Heroic Garothi Worldbreaker": 1,
+            "Heroic Felhounds of Sargeras": 2,
+            "Heroic The Defense of Eonar": 3,
+            "Heroic Portal Keeper Hasabel": 4,
+            "Heroic Antoran High Command": 5,
+            "Heroic Imonar the Soulhunter": 6,
+            "Heroic Kin'garoth": 7,
+            "Heroic Varimathras": 8,
+            "Heroic The Coven of Shivarra": 9,
+            "Heroic Aggramar": 10,
+            "Heroic Argus the Unmaker": 11}
 
 def get_parse_color(parse_number):
     color_key = [(20, '#9d9d9d'), #common-gray
@@ -133,7 +133,7 @@ def make_ilvl_chart(raid_folder, playername=None):
 
 def make_raidstats_chart(raid_folder):
     #TODO: raid duration, cumulative bosses down (heroic only AND normal only)
-    raidstats_data_columns = ["Date", "Duration"] + list(ordered_handles.keys())
+    raidstats_data_columns = ["Date", "Lockout Number", "Duration"] + list(ordered_handles.keys())
 
     raidstats_dictionary = dict()
     for column_header in raidstats_data_columns:
@@ -141,21 +141,44 @@ def make_raidstats_chart(raid_folder):
 
     for filename in [f for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
         raidnight = Raidnight_Data(filename, raid_folder)
+
+        raidstats_dictionary["Lockout Number"].append(raidnight.get_raid_lockout_period())
+
         date = pd.to_datetime(datetime.date.fromtimestamp(raidnight.raidnight_date))
         raidstats_dictionary["Date"].append(date)
 
         raidnight_duration = pd.to_timedelta(datetime.datetime.fromtimestamp(raidnight.fights['end']//1000) - datetime.datetime.fromtimestamp(raidnight.fights['start']//1000))
         raidstats_dictionary["Duration"].append(raidnight_duration)
 
-        for boss in raidstats_data_columns[2:]:
+        for boss in raidstats_data_columns[3:]:
             if boss in raidnight.parse_scrapes.keys():
-                raidstats_dictionary[boss].append(1)
+                raidstats_dictionary[boss].append(ordered_handles[boss])
             else:
                 raidstats_dictionary[boss].append(None)
 
     raidstats_df = pd.DataFrame(raidstats_dictionary, columns=raidstats_data_columns)
     raidstats_df.set_index("Date", inplace=True)
-    raidstats_df["Heroic Garothi Worldbreaker"].plot(marker='o', linestyle='')
+    print(raidstats_df.head())
+    def timeTicks(nanoseconds, pos):
+        seconds = nanoseconds//1000000000
+        hours = str(int(seconds//3600))
+        minutes = str(int((seconds%3600)//60))
+        seconds = str(int(seconds%60))
+        return ':'.join([hours, minutes.zfill(2),seconds.zfill(2)])                                                                                                                                                                                                                                                           
+    formatter = mpl.ticker.FuncFormatter(timeTicks)                                                                                                                                                                                                                         
+    fig = plt.figure(1)
+    ax = fig.add_subplot(111)
+
+    '''for column in raidstats_df.keys():
+        if column == "Duration":
+            continue
+        plt.scatter(raidstats_df.index, raidstats_df[column])
+
+    ax.set_yticks(np.arange(12))'''
+
+    plt.bar(raidstats_df.index, raidstats_df["Duration"])
+    ax.set_yticks(np.arange(0,3600*1000000000*4, 1800*1000000000))
+    ax.yaxis.set_major_formatter(formatter)   
     plt.show()
 
 make_raidstats_chart('MyDudes')
