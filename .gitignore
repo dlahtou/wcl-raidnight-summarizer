@@ -1,0 +1,6 @@
+MyDudes/U*
+__pycache__
+reports/*
+API_keys.py
+geckodriver.log
+wcl.code-workspace

@@ -11,7 +11,7 @@ import datetime
 import re
 import pprint
 from scrape_parse_data import scrape_damage_parse_data
-from API_keys import wcl_api_key
+#from API_keys import wcl_api_key
 from get_wcl_api import get_wcl_api_table, get_wcl_api_fights
 
 ## This class holds all information for a raid night
@@ -30,7 +30,7 @@ class Raidnight_Data(object):
         raidnight_date: a unix timestamp
         """
 
-    API_key = wcl_api_key()
+    API_key = 'bb7a652ddabff076285430d88b002dc8'
     difficulty_dict = {1: "Raid-Finder",
                         2: "Flex",
                         3: "Normal",
@@ -58,6 +58,19 @@ class Raidnight_Data(object):
                     self.raidnight_date = file_dict['raidnight-date']
                     self.raid_name = file_dict['raid-name']
                     self.raid_difficulty = file_dict['raid-difficulty']
+                    zone_name = '_'.join(Raidnight_Data.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
+                    self.raidnight_date = self.fights['start']//1000
+                    raidnight_date_string = datetime.date.fromtimestamp(self.raidnight_date).strftime("%y-%m-%d")
+                    highest_difficulty = 1
+                    for fight in self.fights['fights']:
+                        try:
+                            if fight['difficulty'] and fight['difficulty'] > highest_difficulty:
+                                highest_difficulty = fight['difficulty']
+                        except KeyError:
+                            pass
+                    fight_difficulty_string = Raidnight_Data.difficulty_dict[highest_difficulty]
+                    self.raid_difficulty = fight_difficulty_string
+                    self.name = '-'.join([zone_name,fight_difficulty_string,raidnight_date_string])
                 return
         
         ## Continue to wcl api for data if no matching filename
@@ -141,6 +154,9 @@ class Raidnight_Data(object):
         with open(join(raid_folder, self.name+'('+initializationdata+').json'),'w') as open_file:
             print("Writing to file...")
             json.dump(writedict,open_file,indent=4)
+    
+    def get_name(self):
+        return self.name
 
     def get_fight_time(self, boss_diff_and_name):
         return self.damage_done[boss_diff_and_name]['totalTime'] ## in milliseconds
@@ -217,7 +233,7 @@ class Raidnight_Data(object):
         duration_minutes = (duration_total%3600)//60
         duration_seconds = duration_total%60
 
-        return ':'.join([str(duration_hours), str(duration_minutes), str(duration_seconds)])
+        return ':'.join([str(duration_hours), f'{duration_minutes:02}', f'{duration_seconds:02}'])
     
     def get_kill_count(self):
         kill_count = 0
@@ -267,17 +283,23 @@ def make_differential_parse_dict(raidnight_object, raid_folder):
         if boss_diff_and_name not in combined_prior_parse_dict.keys():
             continue
         for player_name in this_weeks_parse_dict[boss_diff_and_name].keys():
-            ## TODO: pass over values if player died last week
             if player_name not in combined_prior_parse_dict[boss_diff_and_name].keys():
                 continue
             
             this_weeks_overall_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-performance']
             last_weeks_overall_parse = combined_prior_parse_dict[boss_diff_and_name][player_name]['overall-performance']
-            this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-difference'] = this_weeks_overall_parse - last_weeks_overall_parse
+            if last_weeks_overall_parse == 0:
+                this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-difference'] = 0
+            else:
+                this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-difference'] = this_weeks_overall_parse - last_weeks_overall_parse
 
             this_weeks_ilvl_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-performance']
             last_weeks_ilvl_parse = combined_prior_parse_dict[boss_diff_and_name][player_name]['ilvl-performance']
-            this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-difference'] = this_weeks_ilvl_parse - last_weeks_ilvl_parse
+
+            if last_weeks_ilvl_parse == 0:
+                this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-difference'] = 0
+            else:
+                this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-difference'] = this_weeks_ilvl_parse - last_weeks_ilvl_parse
 
             this_weeks_parse_dict[boss_diff_and_name][player_name]['last-weeks-overall-performance'] = last_weeks_overall_parse
             this_weeks_parse_dict[boss_diff_and_name][player_name]['last-weeks-ilvl-performance'] = last_weeks_ilvl_parse   
@@ -360,7 +382,7 @@ def make_overall_parse_report_string(raidnight_object, data_tuple):
 def make_ilvl_parse_report_string(raidnight_object, data_tuple):
     return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
 
-def make_complete_report(raidnight, raid_folder, report_filename):
+def make_complete_report(raidnight, raid_folder, report_filename, improved=True):
     raid_difficulty = "Heroic"
     raid_name = raidnight.get_zone_name_from_id(raidnight.fights['zone'])
     raid_date = datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%m/%d/%y")
@@ -387,13 +409,14 @@ def make_complete_report(raidnight, raid_folder, report_filename):
         for data_tuple in enumerate(get_best_overall_parse(raidnight,3),1):
             open_file.write(str(data_tuple[0]) + ".) " + make_overall_parse_report_string(raidnight, data_tuple[1]) + '\n')
         
-        open_file.write("\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
-        for data_tuple in enumerate(get_best_ilvl_parse_differential(raidnight,raid_folder,5),1):
-            open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
+        if improved:
+            open_file.write("\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
+            for data_tuple in enumerate(get_best_ilvl_parse_differential(raidnight,raid_folder,5),1):
+                open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
 
-        open_file.write("\nMOST IMPROVED OVERALL DPS PERFORMANCES:\n")
-        for data_tuple in enumerate(get_best_overall_parse_differential(raidnight,raid_folder,5),1):
-            open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
+            open_file.write("\nMOST IMPROVED OVERALL DPS PERFORMANCES:\n")
+            for data_tuple in enumerate(get_best_overall_parse_differential(raidnight,raid_folder,5),1):
+                open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
 
         open_file.write("\nBEST HPS (SINGLE FIGHT):" + '\n')
         for data_tuple in enumerate(get_best_hps(raidnight,3),1):
@@ -405,14 +428,15 @@ def make_complete_report(raidnight, raid_folder, report_filename):
 ## returns a list of raidnight objects in the folder that have the prior week's lockout period
 def get_prior_week_data(raidnight, raidfolder):
     raids_list = []
-    for somefile in [f for f in listdir(raidfolder) if isfile(join(raidfolder,f))]:
+    raid_name = raidnight.raid_name
+    for somefile in [f for f in listdir(raidfolder) if isfile(join(raidfolder,f)) and re.search(raid_name, f)]:
         temp_raidnight = Raidnight_Data(somefile, raidfolder)
         if temp_raidnight.get_raid_lockout_period() + 1 == raidnight.get_raid_lockout_period():
             raids_list.append(temp_raidnight)
     return raids_list
 
 ## SANDBOX//TESTING
-test = Raidnight_Data('NqTnLRp1bQ7JdaPH', 'MyDudes')
+'''test = Raidnight_Data('wMY91D3RhaBT2rCG', 'MyDudes')
 print(test.raid_name)
 print("OVERALL PARSE DIFFERENTIALS")
 for line in get_best_overall_parse_differential(test, 'MyDudes', 5):
@@ -422,15 +446,14 @@ for line in get_best_ilvl_parse_differential(test, 'MyDudes', 5):
     print(line)
 
 raidlist = ['XT26GZHtjQraD4KP','Tncy19zRDZW3GXqY','q6fkh9WcarAPvLKF','KNnmg6yM9WVbv2rP','TGAcPg8V3H7tLCqy','d8DNKx6Yp1hPvmVf']
-'''print(listdir('MyDudes'))
+print(listdir('MyDudes'))
 for filename in listdir('MyDudes'):
     print(join('MyDudes',filename))
-print([join(raid_folder,f) for f in listdir(raid_folder) if isfile(join(raid_folder,f))])'''
+print([join(raid_folder,f) for f in listdir(raid_folder) if isfile(join(raid_folder,f))])
 for raidstring in raidlist:
     raid_data = Raidnight_Data(raidstring, 'MyDudes')
     print((raidstring, raid_data.get_raid_lockout_period()))
-'''test = Raidnight_Data('NqTnLRp1bQ7JdaPH', 'MyDudes')
 print(get_best_raid_overall_parse(test,3))
 print(get_best_raid_ilvl_parse(test,3))
 print(get_best_ilvl_parse(test,3))
-make_complete_report(test, 'firstoutputfile.txt')'''
+make_complete_report(test, 'MyDudes', 'firstoutputfile.txt')'''
