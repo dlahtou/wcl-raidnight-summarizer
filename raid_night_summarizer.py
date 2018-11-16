@@ -12,7 +12,7 @@ from os.path import isfile, join
 import certifi
 
 import pycurl
-#from API_keys import wcl_api_key
+from API_keys import wcl_api_key
 from get_wcl_api import get_wcl_api_fights, get_wcl_api_table
 from scrape_parse_data import scrape_damage_parse_data
 
@@ -33,7 +33,7 @@ class RaidnightData(object):
         raidnight_date: a unix timestamp
         """
 
-    API_key = 'bb7a652ddabff076285430d88b002dc8'
+    API_key = wcl_api_key()
     difficulty_dict = {1: "Raid-Finder",
                         2: "Flex",
                         3: "Normal",
