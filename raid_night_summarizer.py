@@ -1,21 +1,24 @@
 """ This script is intended to be the base for a comprehensive raid night summarizer """
 
-from os import listdir
-from os.path import isfile,join
-import json
-import pycurl
-import certifi
-from io import BytesIO
-import string
 import datetime
-import re
+import json
 import pprint
-from scrape_parse_data import scrape_damage_parse_data
+import re
+import string
+from io import BytesIO
+from os import listdir
+from os.path import isfile, join
+
+import certifi
+
+import pycurl
 #from API_keys import wcl_api_key
-from get_wcl_api import get_wcl_api_table, get_wcl_api_fights
+from get_wcl_api import get_wcl_api_fights, get_wcl_api_table
+from scrape_parse_data import scrape_damage_parse_data
+
 
 ## This class holds all information for a raid night
-class Raidnight_Data(object):
+class RaidnightData(object):
     """This class contains all pertinent data for a raidnight as found on warcraftlogs (wcl)
     Attributes:
         wcl-string: The 16-char alphanumeric identifier for the report on wcl
@@ -58,7 +61,7 @@ class Raidnight_Data(object):
                     self.raidnight_date = file_dict['raidnight-date']
                     self.raid_name = file_dict['raid-name']
                     self.raid_difficulty = file_dict['raid-difficulty']
-                    zone_name = '_'.join(Raidnight_Data.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
+                    zone_name = '_'.join(RaidnightData.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
                     self.raidnight_date = self.fights['start']//1000
                     raidnight_date_string = datetime.date.fromtimestamp(self.raidnight_date).strftime("%y-%m-%d")
                     highest_difficulty = 1
@@ -68,7 +71,7 @@ class Raidnight_Data(object):
                                 highest_difficulty = fight['difficulty']
                         except KeyError:
                             pass
-                    fight_difficulty_string = Raidnight_Data.difficulty_dict[highest_difficulty]
+                    fight_difficulty_string = RaidnightData.difficulty_dict[highest_difficulty]
                     self.raid_difficulty = fight_difficulty_string
                     self.name = '-'.join([zone_name,fight_difficulty_string,raidnight_date_string])
                 return
@@ -78,11 +81,11 @@ class Raidnight_Data(object):
         self.wcl_string = initializationdata
         
         ## API call for fights
-        report_string = ''.join([self.wcl_string, "?api_key=", Raidnight_Data.API_key])
+        report_string = ''.join([self.wcl_string, "?api_key=", RaidnightData.API_key])
         self.fights = get_wcl_api_fights(report_string)
         
         ## gather zone/difficulty/date for name string
-        zone_name = '_'.join(Raidnight_Data.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
+        zone_name = '_'.join(RaidnightData.get_zone_name_from_id(self,self.fights['zone']).replace(",","").split(' '))
         self.raid_name = zone_name
         self.raidnight_date = self.fights['start']//1000
         raidnight_date_string = datetime.date.fromtimestamp(self.raidnight_date).strftime("%y-%m-%d")
@@ -93,7 +96,7 @@ class Raidnight_Data(object):
                     highest_difficulty = fight['difficulty']
             except KeyError:
                 pass
-        fight_difficulty_string = Raidnight_Data.difficulty_dict[highest_difficulty]
+        fight_difficulty_string = RaidnightData.difficulty_dict[highest_difficulty]
         self.raid_difficulty = fight_difficulty_string
         self.name = '-'.join([zone_name,fight_difficulty_string,raidnight_date_string])
         print(self.name)
@@ -112,12 +115,12 @@ class Raidnight_Data(object):
         for fight in self.fights['fights']:
             if not fight['boss']:
                 continue
-            temp_fight_name = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']],fight['name']])
+            temp_fight_name = ' '.join([RaidnightData.difficulty_dict[fight['difficulty']],fight['name']])
             temp_fight_name_with_id = ' '.join([temp_fight_name, str(fight['id'])])
             print(temp_fight_name_with_id)
 
             ## the common query string in api call for this fight
-            fight_api_call_string = ''.join(["/", self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",Raidnight_Data.API_key])
+            fight_api_call_string = ''.join(["/", self.wcl_string,"?start=",str(fight['start_time']),"&end=",str(fight['end_time']),"&api_key=",RaidnightData.API_key])
 
             ## query deaths in fight
             temp_deaths_dict = get_wcl_api_table("deaths"+fight_api_call_string)
@@ -217,7 +220,7 @@ class Raidnight_Data(object):
     def get_raid_lockout_period(self):
         with open('raid-release-dates.json','r') as open_file:
             raid_release_timestamps = json.load(open_file)
-        raid_name = Raidnight_Data.get_zone_name_from_id(self, self.fights['zone'])
+        raid_name = RaidnightData.get_zone_name_from_id(self, self.fights['zone'])
         raid_release_date = raid_release_timestamps[raid_name]
         days_since_release = datetime.date.fromtimestamp(self.raidnight_date) - datetime.date.fromtimestamp(raid_release_date)
         return days_since_release.days//7
@@ -252,15 +255,15 @@ class Raidnight_Data(object):
             except KeyError:
                 continue
             player_death_list = []
-            deathdict_id = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']], fight['name'], str(fight['id'])])
+            deathdict_id = ' '.join([RaidnightData.difficulty_dict[fight['difficulty']], fight['name'], str(fight['id'])])
             for entry in self.deaths[deathdict_id]['entries']:
                 player_death_list.append(entry['name'])
-            nonwipe_deathdict_id = ' '.join([Raidnight_Data.difficulty_dict[fight['difficulty']], fight['name']])
+            nonwipe_deathdict_id = ' '.join([RaidnightData.difficulty_dict[fight['difficulty']], fight['name']])
             nonwipe_deaths_dict[nonwipe_deathdict_id] = player_death_list
         return nonwipe_deaths_dict
 
 
-def make_differential_parse_dict(raidnight_object, raid_folder):
+def differential_parse_dict(raidnight_object, raid_folder):
     this_weeks_parse_dict = raidnight_object.parse_scrapes
     raids_list = get_prior_week_data(raidnight_object, raid_folder)
     prior_parse_dicts = [f.parse_scrapes for f in raids_list]
@@ -329,7 +332,7 @@ def get_best_raid_overall_parse(raidnight_object, get_amount):
 def get_best_raid_ilvl_parse(raidnight_object, get_amount):
     return get_best(raidnight_object, 'raid-ilvl-parse', get_amount)
 def get_best_parse_differential(raidnight_object, raid_folder, get_amount, parse_type):
-    parse_dict = make_differential_parse_dict(raidnight_object, raid_folder)
+    parse_dict = differential_parse_dict(raidnight_object, raid_folder)
     overall_difference_set = set()
     for boss in parse_dict.keys():
         for player in parse_dict[boss].keys():
@@ -345,50 +348,72 @@ def get_best_ilvl_parse_differential(raidnight_object, raid_folder, get_amount):
     
 
 ## formatting for output strings
-def make_pretty_time(milliseconds):
+def pretty_time(milliseconds):
+    """
+    Converts ms to h:mm:ss format
+
+    Parameters:
+    milliseconds (int): the duration in ms
+
+    Returns:
+    str: an h:mm:ss format string
+    """
     seconds = round(milliseconds/1000)
     minutes = str(seconds//60)
     seconds = str(seconds%60)
+
     return ':'.join([minutes,seconds.zfill(2)])
-def make_pretty_number(psnumber, numbertype):
+def pretty_number(psnumber, numbertype):
     if psnumber >= 1000000:
         return "%d.%sM %s" % (psnumber//1000000, str(round((psnumber%1000000)/10000)).zfill(2), numbertype)
     else:
-        return "%dk  %s" % (round(psnumber/1000), numbertype)
-def make_pretty_dps(dps):
-    return make_pretty_number(dps,'DPS')
-def make_pretty_hps(hps):
-    return make_pretty_number(hps,'HPS')
+        return f"{round(psnumber/1000, 1)}k  {numbertype}"
+def pretty_dps(dps):
+    return pretty_number(dps,'DPS')
+def pretty_hps(hps):
+    return pretty_number(hps,'HPS')
 
 ## returns a custom-format report string for the given data
-def make_report_string(raidnight_object, data_tuple, metric):
-    pretty_time = make_pretty_time(data_tuple[-1])
+def report_string(raidnight_object, parse_rank_and_data, metric):
+    """
+    Converts ranked parse data into a human readable string.
+
+    Parameters:
+    raidnight_object (RaidnightData): the raidnight corresponding to the parse
+    parse_rank_and_data (tuple): (playername, oparse, iparse, bossdiff+name)
+    metric (str): type of parse {overall-parse, ilvl-parse, dps, hps}
+
+    Returns:
+    str: One full line of human-readable parse info
+    """
+    pretty_time_str = pretty_time(parse_rank_and_data[-1])
     if metric == 'overall-parse' or metric == 'ilvl-parse':
-        pretty_dps = make_pretty_dps(raidnight_object.get_dps(data_tuple[0], data_tuple[3]))
+        pretty_dps_str = pretty_dps(raidnight_object.get_dps(parse_rank_and_data[0], parse_rank_and_data[3]))
 
-    metric_switch = {'overall-parse': lambda x: '{:<17}'.format('(%d) %s' % (x[1], x[0])) + ' -- %s (%s, %s)' % (pretty_dps, x[3], pretty_time),
-                    'ilvl-parse': lambda x: '{:<17}'.format('(%d) %s' % (x[2], x[0])) + ' -- %s (%s, %s)' % (pretty_dps, x[3], pretty_time),
-                    'dps': lambda x: '{:<12}'.format(x[0]) + ' -- %s (%s, %s)' % (make_pretty_dps(x[1]), x[2], pretty_time),
-                    'hps': lambda x: '{:<12}'.format(x[0]) + ' -- %s (%s, %s)' % (make_pretty_hps(x[1]), x[2], pretty_time)}
+    metric_switch = {'overall-parse': lambda x: '{:<17}'.format('(%d) %s' % (x[1], x[0])) + ' -- %s (%s, %s)' % (pretty_dps_str, x[3], pretty_time_str),
+                    'ilvl-parse': lambda x: '{:<17}'.format('(%d) %s' % (x[2], x[0])) + ' -- %s (%s, %s)' % (pretty_dps_str, x[3], pretty_time_str),
+                    'dps': lambda x: '{:<12}'.format(x[0]) + ' -- %s (%s, %s)' % (pretty_dps(x[1]), x[2], pretty_time_str),
+                    'hps': lambda x: '{:<12}'.format(x[0]) + ' -- %s (%s, %s)' % (pretty_hps(x[1]), x[2], pretty_time_str)}
 
-    return metric_switch[metric](data_tuple)
+    return metric_switch[metric](parse_rank_and_data)
 
-def make_dps_report_string(raidnight_object, data_tuple):
-    return make_report_string(raidnight_object, data_tuple, 'dps')
-def make_hps_report_string(raidnight_object, data_tuple):
-    return make_report_string(raidnight_object, data_tuple, 'hps')
-def make_overall_parse_report_string(raidnight_object, data_tuple):
-    return make_report_string(raidnight_object, data_tuple, 'overall-parse')
-def make_ilvl_parse_report_string(raidnight_object, data_tuple):
-    return make_report_string(raidnight_object, data_tuple, 'ilvl-parse')
+def dps_report_string(raidnight_object, parse_rank_and_data):
+    return report_string(raidnight_object, parse_rank_and_data, 'dps')
+def hps_report_string(raidnight_object, parse_rank_and_data):
+    return report_string(raidnight_object, parse_rank_and_data, 'hps')
+def overall_parse_report_string(raidnight_object, parse_rank_and_data):
+    return report_string(raidnight_object, parse_rank_and_data, 'overall-parse')
+def ilvl_parse_report_string(raidnight_object, parse_rank_and_data):
+    return report_string(raidnight_object, parse_rank_and_data, 'ilvl-parse')
 
-def make_complete_report(raidnight, raid_folder, report_filename, improved=True):
-    raid_difficulty = "Heroic"
+def complete_report(raidnight, raid_folder, report_filename, wcl_string, improved=True):
+    raid_difficulty = raidnight.raid_difficulty
     raid_name = raidnight.get_zone_name_from_id(raidnight.fights['zone'])
-    raid_date = datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%m/%d/%y")
+    raid_date = datetime.date.fromtimestamp(raidnight.raidnight_date).strftime("%A %m/%d/%y")
 
     report_title = ' '.join([raid_difficulty, raid_name, raid_date])
     with open(report_filename, 'w') as open_file:
+        open_file.write('```\n')
         open_file.write(report_title + '\n')
         open_file.write("="*len(report_title) + '\n')
 
@@ -397,30 +422,45 @@ def make_complete_report(raidnight, raid_folder, report_filename, improved=True)
 
         open_file.write("Bosses Down: " + str(raidnight.get_kill_count()) + '\n')
 
-        open_file.write("\nWIPES: " + '\n')
+        open_file.write(f"Wipes: {sum([raidnight.wipes[wipe] for wipe in raidnight.wipes])} total ")
+        wipes = []
         for wipe in raidnight.wipes:
-            open_file.write(wipe + ": " + str(raidnight.wipes[wipe]) + '\n')
-        
-        open_file.write("\nTOP ILVL DPS PERFORMANCES:" + '\n')
-        for data_tuple in enumerate(get_best_ilvl_parse(raidnight,3),1):
-            open_file.write(str(data_tuple[0]) + ".) " + make_ilvl_parse_report_string(raidnight,data_tuple[1]) + '\n')
-
-        open_file.write("\nTOP SPEC-WIDE DPS PERFORMANCES:" + '\n')
-        for data_tuple in enumerate(get_best_overall_parse(raidnight,3),1):
-            open_file.write(str(data_tuple[0]) + ".) " + make_overall_parse_report_string(raidnight, data_tuple[1]) + '\n')
+            wipes.append(wipe + " " + str(raidnight.wipes[wipe]))
+        open_file.write('(' + ', '.join(wipes) + ')')
         
         if improved:
-            open_file.write("\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
-            for data_tuple in enumerate(get_best_ilvl_parse_differential(raidnight,raid_folder,5),1):
-                open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
+            open_file.write("\n\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
+            for rank, parsedata in enumerate(get_best_ilvl_parse_differential(raidnight,raid_folder,5),1):
+                rank = str(rank) + ".) "
+                char_name = f'{parsedata[0]:<13}' + "-- +"
+                improvement = str(parsedata[1])
 
+                # format to '1.) character   -- +15 (boss) 45->60
+                open_file.write(rank + char_name + improvement + " (" + parsedata[2] + ") %d->%d\n" % (parsedata[4],parsedata[3]))
+
+            '''
             open_file.write("\nMOST IMPROVED OVERALL DPS PERFORMANCES:\n")
-            for data_tuple in enumerate(get_best_overall_parse_differential(raidnight,raid_folder,5),1):
-                open_file.write(str(data_tuple[0]) + ".) " + data_tuple[1][0] + ": +" + str(data_tuple[1][1]) + " (" + data_tuple[1][2] + ") %d->%d\n" % (data_tuple[1][4],data_tuple[1][3]))
+            for parse_rank_and_data in enumerate(get_best_overall_parse_differential(raidnight,raid_folder,5),1):
+                open_file.write(str(parse_rank_and_data[0]) + ".) " + parsedata[0] + ": +" + str(parsedata[1]) + " (" + parsedata[2] + ") %d->%d\n" % (parsedata[4],parsedata[3]))
+            ''' # overall performance is largely redundant with ilvl performance
 
+        open_file.write("\nTOP ILVL DPS PERFORMANCES:" + '\n')
+        for rank, parsedata in enumerate(get_best_ilvl_parse(raidnight,5),1):
+            # write format 1.) character -- 15.0k DPS (boss, 4:00)
+            open_file.write(str(rank) + ".) " + ilvl_parse_report_string(raidnight, parsedata) + '\n')
+
+        open_file.write("\nTOP SPEC-WIDE DPS PERFORMANCES:" + '\n')
+        for rank, parsedata in enumerate(get_best_overall_parse(raidnight,5),1):
+            # write format 1.) character -- 15.0k DPS (boss, 4:00)
+            open_file.write(str(rank) + ".) " + overall_parse_report_string(raidnight, parsedata) + '\n')
+        
         open_file.write("\nBEST HPS (SINGLE FIGHT):" + '\n')
-        for data_tuple in enumerate(get_best_hps(raidnight,3),1):
-            open_file.write(str(data_tuple[0]) + ".) " + make_hps_report_string(raidnight, data_tuple[1]) + '\n')
+        for rank, parsedata in enumerate(get_best_hps(raidnight, 5),1):
+            # write format 1.) character -- 15.0k HPS (boss, 4:00)
+            open_file.write(str(rank) + ".) " + hps_report_string(raidnight, parsedata) + '\n')
+        
+        open_file.write('```\n')
+        open_file.write(f'{raid_date} logs: http://www.warcraftlogs.com/reports/{wcl_string}')
 
     with open(report_filename, 'r') as open_file:
         print(open_file.read())
@@ -430,30 +470,7 @@ def get_prior_week_data(raidnight, raidfolder):
     raids_list = []
     raid_name = raidnight.raid_name
     for somefile in [f for f in listdir(raidfolder) if isfile(join(raidfolder,f)) and re.search(raid_name, f)]:
-        temp_raidnight = Raidnight_Data(somefile, raidfolder)
+        temp_raidnight = RaidnightData(somefile, raidfolder)
         if temp_raidnight.get_raid_lockout_period() + 1 == raidnight.get_raid_lockout_period():
             raids_list.append(temp_raidnight)
     return raids_list
-
-## SANDBOX//TESTING
-'''test = Raidnight_Data('wMY91D3RhaBT2rCG', 'MyDudes')
-print(test.raid_name)
-print("OVERALL PARSE DIFFERENTIALS")
-for line in get_best_overall_parse_differential(test, 'MyDudes', 5):
-    print(line)
-print("ILEVEL PARSE DIFFERENTIALS")
-for line in get_best_ilvl_parse_differential(test, 'MyDudes', 5):
-    print(line)
-
-raidlist = ['XT26GZHtjQraD4KP','Tncy19zRDZW3GXqY','q6fkh9WcarAPvLKF','KNnmg6yM9WVbv2rP','TGAcPg8V3H7tLCqy','d8DNKx6Yp1hPvmVf']
-print(listdir('MyDudes'))
-for filename in listdir('MyDudes'):
-    print(join('MyDudes',filename))
-print([join(raid_folder,f) for f in listdir(raid_folder) if isfile(join(raid_folder,f))])
-for raidstring in raidlist:
-    raid_data = Raidnight_Data(raidstring, 'MyDudes')
-    print((raidstring, raid_data.get_raid_lockout_period()))
-print(get_best_raid_overall_parse(test,3))
-print(get_best_raid_ilvl_parse(test,3))
-print(get_best_ilvl_parse(test,3))
-make_complete_report(test, 'MyDudes', 'firstoutputfile.txt')'''
