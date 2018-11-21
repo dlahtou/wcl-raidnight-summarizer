@@ -2,9 +2,12 @@
 
 import datetime
 import json
+import pandas as pd
 import re
 from os import listdir
 from os.path import isfile, join
+from collections import defaultdict
+from numpy import mean
 
 from API_keys import wcl_api_key
 from get_wcl_api import get_wcl_api_fights, get_wcl_api_table
@@ -169,6 +172,31 @@ class RaidnightData():
         with open(join(raid_folder, self.name+'('+initializationdata+').json'), 'w') as open_file:
             print("Writing to file...")
             json.dump(writedict, open_file, indent=4)
+    
+    def export_csv(self):
+        #make a dictionary that is easily convertable to a dataframe
+        all_dict = {
+            'char': [],
+            'boss': [],
+            'diff': [],
+            'duration': [],
+            'healing': [],
+            'damage': [],
+            'hps': [],
+            'dps': [],
+            'died': [],
+            'ov_parse': [],
+            'ilvl_parse': []
+        }
+
+        for fight in self.fights['fights']:
+            if not fight['boss'] or not fight['kill']:
+                continue
+                
+        
+
+        return
+
 
     def get_name(self):
         return self.name
@@ -193,7 +221,7 @@ class RaidnightData():
                         (entry['name'], int(entry['total']/fight_time*1000), boss, fight_time))
             # parses format
             else:
-                for entry in data_location[boss].keys():
+                for entry in data_location[boss]:
                     return_set.add((entry, data_location[boss][entry]['overall-performance'],
                                     data_location[boss][entry]['ilvl-performance'], boss, fight_time))
         return return_set
@@ -211,9 +239,9 @@ class RaidnightData():
         return_set = set()
         for boss in self.parse_scrapes:
             average_overall_parse = sum([self.parse_scrapes[boss][x]['overall-performance']
-                                         for x in self.parse_scrapes[boss].keys()])/len(self.parse_scrapes[boss])
+                                         for x in self.parse_scrapes[boss]])/len(self.parse_scrapes[boss])
             average_ilvl_parse = sum([self.parse_scrapes[boss][x]['ilvl-performance']
-                                      for x in self.parse_scrapes[boss].keys()])/len(self.parse_scrapes[boss])
+                                      for x in self.parse_scrapes[boss]])/len(self.parse_scrapes[boss])
             return_set.add((boss, average_overall_parse, average_ilvl_parse))
         return return_set
 
@@ -238,8 +266,15 @@ class RaidnightData():
 
         return 0
 
-    # returns the number of weeks since raid release (0 = first normal/heroic week, 1 = first mythic week)
     def get_raid_lockout_period(self):
+        """
+        Gets the number of weeks since raid release
+
+        0 = first normal/heroic week, 1 = first mythic week
+
+        Returns:
+        (int)
+        """
         with open('raid-release-dates.json', 'r') as open_file:
             raid_release_timestamps = json.load(open_file)
         raid_name = get_zone_name_from_id(
@@ -250,6 +285,12 @@ class RaidnightData():
         return days_since_release.days//7
 
     def get_raid_duration(self):
+        """
+        Gets a formatted H:MM:SS string representing the raid duration
+
+        Returns:
+        (str)
+        """
         start = datetime.datetime.fromtimestamp(
             self.fights['start']//1000)  # timestamp in ms resolution
         end = datetime.datetime.fromtimestamp(self.fights['end']//1000)
@@ -291,44 +332,100 @@ class RaidnightData():
 
 
 def differential_parse_dict(raidnight_object, raid_folder):
+    """
+    Constructs a dictionary for comparing this week's parses to last week's
+
+    Parameters:
+    raidnight_object (RaidnightData): The current week's RaidnightData
+    raid_folder (string): the directory to scan for last week's RaidnightData object(s)
+
+    Returns:
+    (dict): a modified version of the parse_scrapes dict with added historical and differential fields
+
+            [boss difficulty and name]
+                [character name]
+                    [overall perf]
+                    [ilvl perf]
+                    [last week's overall]
+                    [this week's overall]
+                [character name 2]
+            [boss 2]
+                [character name]
+    """
+
     this_weeks_parse_dict = raidnight_object.parse_scrapes
     raids_list = get_prior_week_data(raidnight_object, raid_folder)
     prior_parse_dicts = [f.parse_scrapes for f in raids_list]
     prior_simple_death_dicts = [f.get_nonwipe_deaths() for f in raids_list]
     combined_prior_parse_dict = dict()
+
+    combined_prior_all_parses = dict()
+    player_averages = dict()
+
     # add dict entries to combined dict IF player did not die
     for parse_dict, death_dict in zip(prior_parse_dicts, prior_simple_death_dicts):
-        for boss in parse_dict.keys():
+        for boss in parse_dict:
             if boss not in combined_prior_parse_dict:
                 combined_prior_parse_dict[boss] = dict()
-            for player in parse_dict[boss].keys():
+            if boss not in combined_prior_all_parses:
+                combined_prior_all_parses[boss] = dict()
+
+            for player in parse_dict[boss]:
                 if player in death_dict[boss]:
                     continue
                 else:
                     combined_prior_parse_dict[boss][player] = parse_dict[boss][player]
 
-    # update this_weeks_parse_dict with differential values if they exist
-    for boss_diff_and_name in this_weeks_parse_dict.keys():
-        # skip if boss does not occur in last week's data
-        if boss_diff_and_name not in combined_prior_parse_dict.keys():
-            continue
-        for player_name in this_weeks_parse_dict[boss_diff_and_name].keys():
-            if player_name not in combined_prior_parse_dict[boss_diff_and_name].keys():
-                continue
+                # separate dict including death parses
+                combined_prior_all_parses[boss][player] = parse_dict[boss][player]
 
+    # update this_weeks_parse_dict with differential values if they exist
+    for boss_diff_and_name in this_weeks_parse_dict:
+        # skip if boss does not occur in last week's data
+        if boss_diff_and_name not in combined_prior_parse_dict:
+            continue
+        for player_name in this_weeks_parse_dict[boss_diff_and_name]:
+            
             this_weeks_overall_parse = this_weeks_parse_dict[
                 boss_diff_and_name][player_name]['overall-performance']
-            last_weeks_overall_parse = combined_prior_parse_dict[
-                boss_diff_and_name][player_name]['overall-performance']
+            try:
+                last_weeks_overall_parse = combined_prior_all_parses[
+                    boss_diff_and_name][player_name]['overall-performance']
+            except:
+                continue
+
+            if player_name not in player_averages:
+                player_averages[player_name] = {'this_weeks_overalls': list(),
+                                                'this_weeks_ilvls': list(),
+                                                'last_weeks_overalls': list(),
+                                                'last_weeks_ilvls': list()}
+
+            this_weeks_ilvl_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-performance']
+            last_weeks_ilvl_parse = combined_prior_all_parses[
+                boss_diff_and_name][player_name]['ilvl-performance']
+
+            player_averages[player_name]['this_weeks_overalls'].append(this_weeks_overall_parse)
+            player_averages[player_name]['this_weeks_ilvls'].append(this_weeks_ilvl_parse)
+
+            player_averages[player_name]['last_weeks_overalls'].append(last_weeks_overall_parse)
+            player_averages[player_name]['last_weeks_ilvls'].append(last_weeks_ilvl_parse)
+
+            player_averages[player_name]['this_week_ov_parse'] = mean(player_averages[player_name]['this_weeks_overalls'])
+            player_averages[player_name]['this_week_ilvl_parse'] = mean(player_averages[player_name]['this_weeks_ilvls'])
+            player_averages[player_name]['last_week_ov_parse'] = mean(player_averages[player_name]['last_weeks_overalls'])
+            player_averages[player_name]['last_week_ilvl_parse'] = mean(player_averages[player_name]['last_weeks_ilvls'])
+            player_averages[player_name]['ov_diff'] = player_averages[player_name]['this_week_ov_parse'] - player_averages[player_name]['last_week_ov_parse']
+            player_averages[player_name]['ilvl_diff'] = player_averages[player_name]['this_week_ilvl_parse'] - player_averages[player_name]['last_week_ilvl_parse']
+
+
+            if player_name not in combined_prior_parse_dict[boss_diff_and_name]:
+                continue
+
             if last_weeks_overall_parse == 0:
                 this_weeks_parse_dict[boss_diff_and_name][player_name]['overall-difference'] = 0
             else:
                 this_weeks_parse_dict[boss_diff_and_name][player_name][
                     'overall-difference'] = this_weeks_overall_parse - last_weeks_overall_parse
-
-            this_weeks_ilvl_parse = this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-performance']
-            last_weeks_ilvl_parse = combined_prior_parse_dict[
-                boss_diff_and_name][player_name]['ilvl-performance']
 
             if last_weeks_ilvl_parse == 0:
                 this_weeks_parse_dict[boss_diff_and_name][player_name]['ilvl-difference'] = 0
@@ -339,12 +436,12 @@ def differential_parse_dict(raidnight_object, raid_folder):
             this_weeks_parse_dict[boss_diff_and_name][player_name]['last-weeks-overall-performance'] = last_weeks_overall_parse
             this_weeks_parse_dict[boss_diff_and_name][player_name]['last-weeks-ilvl-performance'] = last_weeks_ilvl_parse
 
-    return this_weeks_parse_dict
-
-# returns a sorted set of tuples representing the best-in-class performance for the raid night
+    return this_weeks_parse_dict, player_averages
 
 
 def get_best(raidnight_object, metric, get_amount):
+    # returns a sorted set of tuples representing the best-in-class performance for the raid night
+    
     metric_switch = {'dps': lambda x: sorted(raidnight_object.dps_set(), \
                                         key=lambda y: y[1], reverse=True)[:x],
                      'overall-parse': lambda x: sorted(raidnight_object.dps_parse_set(), \
@@ -386,10 +483,10 @@ def get_best_raid_ilvl_parse(raidnight_object, get_amount):
 
 
 def get_best_parse_differential(raidnight_object, raid_folder, get_amount, parse_type):
-    parse_dict = differential_parse_dict(raidnight_object, raid_folder)
+    parse_dict, _ = differential_parse_dict(raidnight_object, raid_folder)
     overall_difference_set = set()
-    for boss in parse_dict.keys():
-        for player in parse_dict[boss].keys():
+    for boss in parse_dict:
+        for player in parse_dict[boss]:
             try:
                 overall_difference_set.add((player, parse_dict[boss][player][parse_type + '-difference'], boss, parse_dict[boss]
                                             [player][parse_type + '-performance'], parse_dict[boss][player]['last-weeks-'+parse_type+'-performance']))
@@ -405,6 +502,16 @@ def get_best_overall_parse_differential(raidnight_object, raid_folder, get_amoun
 def get_best_ilvl_parse_differential(raidnight_object, raid_folder, get_amount):
     return get_best_parse_differential(raidnight_object, raid_folder, get_amount, 'ilvl')
 
+def get_best_overall_avg_improvement(raidnight_object, raid_folder, get_amount):
+    _, player_averages = differential_parse_dict(raidnight_object, raid_folder)
+
+    return sorted([(k, player_averages[k]['ov_diff']) for k in player_averages], key=lambda x: x[1], reverse=True)[:get_amount]
+
+def get_best_ilvl_avg_improvement(raidnight_object, raid_folder, get_amount):
+    _, player_averages = differential_parse_dict(raidnight_object, raid_folder)
+
+    return sorted([(k, player_averages[k]['ilvl_diff'], player_averages[k]['last_week_ilvl_parse'], player_averages[k]['this_week_ilvl_parse']) \
+             for k in player_averages], key=lambda x: x[1], reverse=True)[:get_amount]
 
 # formatting for output strings
 def pretty_time(milliseconds):
@@ -441,7 +548,7 @@ def pretty_number(psnumber, numbertype):
     if psnumber >= 1000000:
         return "%d.%sM %s" % (psnumber//1000000, str(round((psnumber % 1000000)/10000)).zfill(2), numbertype)
 
-    return f"{round(psnumber/1000, 1)}k  {numbertype}"
+    return f"{round(psnumber/1000, 1):>4}k  {numbertype}"
 
 
 def pretty_dps(dps):
@@ -524,10 +631,14 @@ def complete_report(raidnight, raid_folder, report_filename, wcl_string, improve
         open_file.write('(' + ', '.join(wipes) + ')')
 
         if improved:
-            open_file.write("\n\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
+            open_file.write("\n\nMOST IMPROVED ACROSS ALL FIGHTS:\n")
+            for i, (name, improvement, last_week, this_week) in enumerate(get_best_ilvl_avg_improvement(raidnight, raid_folder, 1), 1):
+                open_file.write(f'{i}.) {name:<15} ({round(improvement, 1): >+5})      {last_week}->{this_week} avg\n')
+
+            open_file.write("\nMOST IMPROVED ILVL DPS PERFORMANCES:\n")
             for rank, parsedata in enumerate(get_best_ilvl_parse_differential(raidnight, raid_folder, 5), 1):
                 rank = str(rank) + ".) "
-                char_name = f'{parsedata[0]:<18}' + "-- +"
+                char_name = f'{parsedata[0]:<15}' + "+"
                 improvement = str(parsedata[1])
 
                 # format to '1.) character   -- +15 (boss) 45->60
@@ -537,7 +648,7 @@ def complete_report(raidnight, raid_folder, report_filename, wcl_string, improve
                 # improved overall performance is largely redundant with ilvl performance, so I left it out
 
         open_file.write("\nTOP ILVL DPS PERFORMANCES:" + '\n')
-        for rank, parsedata in enumerate(get_best_ilvl_parse(raidnight, 5), 1):
+        for rank, parsedata in enumerate(get_best_ilvl_parse(raidnight, 10), 1):
             # write format 1.) character -- 15.0k DPS (boss, 4:00)
             open_file.write(str(rank) + ".) " +
                             ilvl_parse_report_string(raidnight, parsedata) + '\n')
