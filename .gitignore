@@ -5,3 +5,4 @@ API_keys.py
 geckodriver.log
 wcl.code-workspace
 test.py
+env*
