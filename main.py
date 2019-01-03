@@ -15,9 +15,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    raid_folder = join(basedir, 'MyDudes') ##TODO: replace hard string with argparse input value
+    raid_folder = join(basedir, args.dir if args.dir else 'MyDudes') ##TODO: replace hard string with argparse input value
 
-    raidlist = ['TLRgajwrbvVPhBM6']
+    raidlist = [args.code]
 
     for raid_id in raidlist:
         raidnight = RaidnightData(raid_id, raid_folder)

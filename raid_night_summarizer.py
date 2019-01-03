@@ -4,8 +4,8 @@ import datetime
 import json
 import pandas as pd
 import re
-from os import listdir, pardir
-from os.path import isfile, join
+from os import listdir, pardir, mkdir
+from os.path import isfile, join, isdir
 from collections import defaultdict
 from numpy import mean
 
@@ -50,6 +50,8 @@ class RaidnightData():
     def __init__(self, initializationdata, raid_folder):
         # Search working directory for matching filename
         self.raid_folder = raid_folder
+        if not isdir(raid_folder):
+            mkdir(raid_folder)
         for filename in [join(raid_folder, f) for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
             if re.search(re.escape(initializationdata), filename):
                 with open(filename, 'r') as open_file:
