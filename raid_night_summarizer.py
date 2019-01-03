@@ -4,7 +4,7 @@ import datetime
 import json
 import pandas as pd
 import re
-from os import listdir
+from os import listdir, pardir
 from os.path import isfile, join
 from collections import defaultdict
 from numpy import mean
@@ -14,8 +14,8 @@ from get_wcl_api import get_wcl_api_fights, get_wcl_api_table
 from scrape_parse_data import scrape_damage_parse_data
 
 
-def get_zone_name_from_id(zoneid):
-    with open('zones.json', 'r') as open_file:
+def get_zone_name_from_id(zoneid, basedir):
+    with open(join(basedir, pardir, 'zones.json'), 'r') as open_file:
         zones_dict = json.load(open_file)
     for entry in zones_dict:
         if entry['id'] == zoneid:
@@ -49,6 +49,7 @@ class RaidnightData():
 
     def __init__(self, initializationdata, raid_folder):
         # Search working directory for matching filename
+        self.raid_folder = raid_folder
         for filename in [join(raid_folder, f) for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
             if re.search(re.escape(initializationdata), filename):
                 with open(filename, 'r') as open_file:
@@ -63,7 +64,7 @@ class RaidnightData():
                     self.raid_name = file_dict['raid-name']
                     self.raid_difficulty = file_dict['raid-difficulty']
                     zone_name = '_'.join(get_zone_name_from_id(
-                        self.fights['zone']).replace(",", "").split(' '))
+                        self.fights['zone'], raid_folder).replace(",", "").split(' '))
                     self.raidnight_date = self.fights['start']//1000
                     raidnight_date_string = datetime.date.fromtimestamp(
                         self.raidnight_date).strftime("%y-%m-%d")
@@ -91,7 +92,7 @@ class RaidnightData():
 
         # gather zone/difficulty/date for name string
         zone_name = '_'.join(get_zone_name_from_id(
-            self.fights['zone']).replace(",", "").split(' '))
+            self.fights['zone'], raid_folder).replace(",", "").split(' '))
         self.raid_name = zone_name
         self.raidnight_date = self.fights['start']//1000
         raidnight_date_string = datetime.date.fromtimestamp(
@@ -275,10 +276,11 @@ class RaidnightData():
         Returns:
         (int)
         """
-        with open('raid-release-dates.json', 'r') as open_file:
+        with open(join(self.raid_folder, pardir, 'raid-release-dates.json'), 'r') as open_file:
             raid_release_timestamps = json.load(open_file)
         raid_name = get_zone_name_from_id(
-            self.fights['zone'])
+            self.fights['zone'],
+            self.raid_folder)
         raid_release_date = raid_release_timestamps[raid_name]
         days_since_release = datetime.date.fromtimestamp(
             self.raidnight_date) - datetime.date.fromtimestamp(raid_release_date)
@@ -440,8 +442,15 @@ def differential_parse_dict(raidnight_object, raid_folder):
 
 
 def get_best(raidnight_object, metric, get_amount):
-    # returns a sorted set of tuples representing the best-in-class performance for the raid night
-    
+    """
+    Returns a sorted set of tuples representing the best-in-class performance for the raid night
+
+    Parameters:
+    raidnight_object (RaidnightData): the raidnight to be analyzed
+    metric (str): one of ['dps', 'overall-parse', 'ilvl-parse', 'hps', 'raid-overall-parse']
+    """
+
+
     metric_switch = {'dps': lambda x: sorted(raidnight_object.dps_set(), \
                                         key=lambda y: y[1], reverse=True)[:x],
                      'overall-parse': lambda x: sorted(raidnight_object.dps_parse_set(), \
@@ -605,7 +614,8 @@ def ilvl_parse_report_string(raidnight_object, parse_rank_and_data):
 
 
 def complete_report(raidnight, raid_folder, report_filename, wcl_string, improved=True):
-    raid_name = get_zone_name_from_id(raidnight.fights['zone'])
+    raid_name = get_zone_name_from_id(raidnight.fights['zone'],
+                                      raid_folder)
     raid_date = datetime.date.fromtimestamp(
         raidnight.raidnight_date).strftime("%A %m/%d/%y")
 
@@ -630,8 +640,12 @@ def complete_report(raidnight, raid_folder, report_filename, wcl_string, improve
             wipes.append(wipe + " " + str(raidnight.wipes[wipe]))
         open_file.write('(' + ', '.join(wipes) + ')')
 
+        open_file.write("\n\nTONIGHT'S TOP FIGHT:" + '\n')
+        for rank, (boss, overall, ilvl) in enumerate(get_best_raid_ilvl_parse(raidnight, 1), 1):
+            open_file.write(f'{boss}: {round(ilvl, 1)} raid average ilvl parse\n')
+
         if improved:
-            open_file.write("\n\nMOST IMPROVED ACROSS ALL FIGHTS:\n")
+            open_file.write("\nMOST IMPROVED ACROSS ALL FIGHTS:\n")
             for i, (name, improvement, last_week, this_week) in enumerate(get_best_ilvl_avg_improvement(raidnight, raid_folder, 1), 1):
                 open_file.write(f'{i}.) {name:<15} ({round(improvement, 1): >+5})      {last_week}->{this_week} avg\n')
 
@@ -683,3 +697,8 @@ def get_prior_week_data(raidnight, raidfolder):
         if temp_raidnight.get_raid_lockout_period() + 1 == raidnight.get_raid_lockout_period():
             raids_list.append(temp_raidnight)
     return raids_list
+
+if __name__ == '__main__':
+    wcl_string = '2cHFAgv6GPyZ1Tfj'
+
+    rn = RaidnightData(wcl_string, 'MyDudes')

@@ -18,8 +18,12 @@ def scrape_damage_parse_data(wcl_string,fight_id):
     options.set_preference("dom.max_script_run_time", 5)
     options.set_preference("http.response.timeout", 5)
     driver = webdriver.Firefox(firefox_options=options)
+    driver.set_page_load_timeout(10)
 
-    driver.get('https://www.warcraftlogs.com/reports/'+wcl_string+'#fight='+str(fight_id)+'&type=damage-done')
+    try:
+        driver.get('https://www.warcraftlogs.com/reports/'+wcl_string+'#fight='+str(fight_id)+'&type=damage-done')
+    except:
+        pass
 
     all_tablerows_selector = '//div[@id="table-container"]/div/table/tbody/tr'
     trs = driver.find_elements_by_xpath(all_tablerows_selector)
