@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    raid_folder = join(basedir, args.dir if args.dir else 'MyDudes') ##TODO: replace hard string with argparse input value
+    raid_folder = join(basedir, args.dir if args.dir else 'MyDudes')
 
     raidlist = [args.code]
 
