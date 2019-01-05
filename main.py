@@ -4,11 +4,6 @@ from os.path import realpath, dirname, join, isdir
 from os import pardir, mkdir
 
 if __name__ == '__main__':
-    # Setup filepaths
-    basedir = dirname(realpath(__file__))
-    if not isdir(join(basedir, 'reports')):
-        mkdir(join(basedir, 'reports'))
-    raid_folder = join(basedir, args.dir if args.dir else 'MyDudes')
 
     # Input arguments
     parser = argparse.ArgumentParser(description='Generate reports for warcraftlogs raid data')
@@ -16,8 +11,13 @@ if __name__ == '__main__':
                         help="the 16-character string identifier for a report")
     parser.add_argument('-dir', type=str,
                         help="the name of the directory containing raid json files")
-
     args = parser.parse_args()
+
+    # Setup filepaths
+    basedir = dirname(realpath(__file__))
+    if not isdir(join(basedir, 'reports')):
+        mkdir(join(basedir, 'reports'))
+    raid_folder = join(basedir, args.dir if args.dir else 'MyDudes')
 
     # Create list of raid codes to lookup on warcraftlogs
     raidlist = [args.code]

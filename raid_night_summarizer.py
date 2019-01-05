@@ -333,6 +333,19 @@ class RaidnightData():
                 [RaidnightData.difficulty_dict[fight['difficulty']], fight['name']])
             nonwipe_deaths_dict[nonwipe_deathdict_id] = player_death_list
         return nonwipe_deaths_dict
+    
+    def export_damage_csv(self, out_path=None):
+        '''
+        Creates a pandas dataframe of damage parses for a raidnight
+
+        Parameters:
+        None
+
+        Returns:
+        None
+        '''
+
+        # TODO: implement class method
 
 
 def differential_parse_dict(raidnight_object, raid_folder):
