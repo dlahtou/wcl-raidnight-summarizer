@@ -6,7 +6,7 @@ from textwrap import wrap
 import re
 import pandas as pd
 
-ordered_handles = {"Heroic Garothi Worldbreaker": 1,
+antorus_ordered_handles = {"Heroic Garothi Worldbreaker": 1,
             "Heroic Felhounds of Sargeras": 2,
             "Heroic The Defense of Eonar": 3,
             "Heroic Portal Keeper Hasabel": 4,
@@ -17,6 +17,15 @@ ordered_handles = {"Heroic Garothi Worldbreaker": 1,
             "Heroic The Coven of Shivarra": 9,
             "Heroic Aggramar": 10,
             "Heroic Argus the Unmaker": 11}
+
+uldir_ordered_handles = {"Heroic Taloc": 1,
+            "Heroic MOTHER": 2,
+            "Heroic Fetid Devourer": 3,
+            "Heroic Vectis": 4,
+            "Heroic Zek'voz": 5,
+            "Heroic Zul": 6,
+            "Heroic Mythrax": 7,
+            "Heroic G'huun": 8}
 
 def get_parse_color(parse_number):
     color_key = [(20, '#9d9d9d'), #common-gray
@@ -56,7 +65,9 @@ def make_heroic_raid_avg_ilvl_parse_scatter_plot(raid_folder):
     average_parses = []
 
     for filename in [f for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
-        raidnight = Raidnight_Data(filename, 'MyDudes')
+        if 'Ant' in filename:
+            continue
+        raidnight = RaidnightData(filename, 'MyDudes')
         date = pd.to_datetime(datetime.date.fromtimestamp(raidnight.raidnight_date))
 
         for boss in raidnight.parse_scrapes.keys():
@@ -81,7 +92,7 @@ def make_heroic_raid_avg_ilvl_parse_scatter_plot(raid_folder):
     ax.set_xlabel("Date")
     
     handles, labels = ax.get_legend_handles_labels()
-    handles, labels = zip(*sorted(zip(handles, labels), key=lambda x: ordered_handles[x[1]]))
+    handles, labels = zip(*sorted(zip(handles, labels), key=lambda x: uldir_ordered_handles[x[1]]))
 
     ax.legend(handles, labels, bbox_to_anchor=(1.02, 1), loc=2, borderaxespad=0.)
     plt.tight_layout()
@@ -103,7 +114,9 @@ def make_ilvl_chart(raid_folder, playername=None):
     average_parses = []
 
     for filename in [join(raid_folder, f) for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
-        raidnight = Raidnight_Data(filename, 'MyDudes')
+        if 'Ant' in filename:
+            continue
+        raidnight = RaidnightData(filename, 'MyDudes')
         date = pd.to_datetime(datetime.date.fromtimestamp(raidnight.raidnight_date))
         top_average_ilevel = 0
 
@@ -133,14 +146,17 @@ def make_ilvl_chart(raid_folder, playername=None):
 
 def make_raidstats_chart(raid_folder):
     #TODO: raid duration, cumulative bosses down (heroic only AND normal only)
-    raidstats_data_columns = ["Date", "Lockout Number", "Duration"] + list(ordered_handles.keys())
+    raidstats_data_columns = ["Date", "Lockout Number", "Duration"] + list(uldir_ordered_handles.keys())
 
     raidstats_dictionary = dict()
     for column_header in raidstats_data_columns:
         raidstats_dictionary[column_header] = []
 
     for filename in [f for f in listdir(raid_folder) if isfile(join(raid_folder, f))]:
-        raidnight = Raidnight_Data(filename, raid_folder)
+        if filename[:3] == "Ant":
+            continue
+
+        raidnight = RaidnightData(filename, raid_folder)
 
         raidstats_dictionary["Lockout Number"].append(raidnight.get_raid_lockout_period())
 
@@ -152,7 +168,7 @@ def make_raidstats_chart(raid_folder):
 
         for boss in raidstats_data_columns[3:]:
             if boss in raidnight.parse_scrapes.keys():
-                raidstats_dictionary[boss].append(ordered_handles[boss])
+                raidstats_dictionary[boss].append(uldir_ordered_handles[boss])
             else:
                 raidstats_dictionary[boss].append(None)
 
@@ -181,4 +197,4 @@ def make_raidstats_chart(raid_folder):
     ax.yaxis.set_major_formatter(formatter)   
     plt.show()
 
-make_raidstats_chart('MyDudes')
+make_heroic_raid_avg_ilvl_parse_scatter_plot('MyDudes')
