@@ -56,6 +56,9 @@ class RaidnightData():
             if re.search(re.escape(initializationdata), filename):
                 with open(filename, 'r') as open_file:
                     file_dict = json.load(open_file)
+                    print(filename)
+                    self.wcl_string = re.search(r'\(.+\)', filename).group()[1:-1]
+                    print(self.wcl_string)
                     self.damage_done = file_dict['damage-done']
                     self.healing = file_dict['healing']
                     self.deaths = file_dict['deaths']
